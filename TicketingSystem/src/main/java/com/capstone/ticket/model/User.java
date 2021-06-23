@@ -1,12 +1,13 @@
 package com.capstone.ticket.model;
 
 //import java.util.Arrays;
-import java.sql.Date;
-//import java.util.*;
-import java.io.Serializable;
-import javax.persistence.*;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Date;
+
+//import java.util.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -25,18 +26,14 @@ public class User implements Serializable{
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 	
+	@Column(name = "password", nullable = false)
+	private String password;
+	
 	@Column(name = "address", nullable = false)
 	private String address;
 	
 	@Column(name = "contact", nullable = false)
 	private String contact;
-	
-	@Column(name = "travel_date", nullable = false)
-	private Date travelDate;
-	
-	@Column(name = "return_date", nullable = false)
-	private Date returnDate;
-	
 	
 	public int getId() {
 		return id;
@@ -44,7 +41,18 @@ public class User implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", password='" + password + '\'' +
+				", address='" + address + '\'' +
+				", contact='" + contact + '\'' +
+				'}';
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -65,18 +73,6 @@ public class User implements Serializable{
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
-	public Date getTravelDate() {
-		return travelDate;
-	}
-	public void setTravelDate(Date travelDate) {
-		this.travelDate = travelDate;
-	}
-	public Date getReturnDate() {
-		return returnDate;
-	}
-	public void setReturnDate(Date returnDate) {
-		this.returnDate = returnDate;
-	}
 	
 	public User() {
 		
@@ -88,18 +84,13 @@ public class User implements Serializable{
 		this.name = name;
 		this.address = address;
 		this.contact = contact;
-		this.travelDate = travelDate;
-		this.returnDate = returnDate;
 	}
-	
 
-	
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", address=" + address + ", contact=" + contact + ", travelDate="
-				+ travelDate + ", returnDate=" + returnDate + "]";
+	public String getPassword() {
+		return password;
 	}
-	
 
-	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
