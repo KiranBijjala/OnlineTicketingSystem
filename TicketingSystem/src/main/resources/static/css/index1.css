@@ -9,3 +9,6 @@ a.button {
 a.button:hover {
   background-color: #5469d4;
 }
+html {
+  font-family: Arial, sans-serif;
+}
