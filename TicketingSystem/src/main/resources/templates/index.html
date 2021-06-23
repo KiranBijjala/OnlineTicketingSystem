@@ -2,6 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <!-- <link rel="stylesheet" th:href="@{css/index1.css}" /> -->
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+
     <meta charset="utf-8" />
     <title>Ticket Manager</title>
 </head>
@@ -12,35 +15,41 @@
         <a href="/addticket">Create New Ticket</a>
         <a href="/updateprofile">Edit User Profile</a>
         <br /><br />
-        <table border="1" cellpadding="10">
-            <thead>
-                <tr>
-                    <th>Ticket ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Contact</th>
-                    <th>Travel Date</th>
-                    <th>Return Date</th>
-                    <th>Passengers</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="ticket : ${listTickets}">
-                    <td th:text="${ticket.id}">Ticket ID</td>
-                    <td th:text="${ticket.name}">Name</td>
-                    <td th:text="${ticket.address}">Address</td>
-                    <td th:text="${ticket.contact}">Contact</td>
-                    <td th:text="${ticket.travelDate}">Travel Date</td>
-                    <td th:text="${ticket.returnDate}">Return Date</td>
-                    <td th:text="${ticket.passengers}">Return Date</td>
-                    <td>
-                        <a th:href="@{'/edit/' + ${ticket.id}}">Edit</a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a th:href="@{'/delete/' + ${ticket.id}}">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mt-5 mb-5">
+                    <table class="table table-bordered" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Contact</th>
+                                <th>Travel Date</th>
+                                <th>Return Date</th>
+                                <th>Passengers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr align="center" th:each="ticket : ${listTickets}">
+                                <td th:text="${ticket.id}">Ticket ID</td>
+                                <td th:text="${ticket.name}">Name</td>
+                                <td th:text="${ticket.address}">Address</td>
+                                <td th:text="${ticket.contact}">Contact</td>
+                                <td th:text="${ticket.travelDate}">Travel Date</td>
+                                <td th:text="${ticket.returnDate}">Return Date</td>
+                                <td th:text="${ticket.passengers}">Return Date</td>
+                                <td>
+                                    <a th:href="@{'/edit/' + ${ticket.id}}" class="button">Edit</a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a th:href="@{'/delete/' + ${ticket.id}}" class="button">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

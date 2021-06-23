@@ -1,36 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="utf-8" />
-<title>User Login page</title>
+	<link rel="stylesheet" th:href="@{css/index1.css}" />
+	<meta charset="utf-8" />
+	<title>User Login page</title>
 </head>
+
 <body>
 	<div align="center">
 		<h1>Update User</h1>
 		<br />
-		<form action="#" th:action="@{/updateuser}" th:object="${user}"
-			method="post">
+		<form action="#" th:action="@{/updateuser}" th:object="${user}" method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>User Name:</td>
-					<td><input type="text" th:field="*{name}" required/></td>
+					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="password" th:field="*{password}" required/></td>
+					<td><input type="password" th:field="*{password}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Address:</td>
-					<td><input type="text" th:field="*{name}" required/></td>
+					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
 				<tr>
 					<td>Contact:</td>
-					<td><input type="password" th:field="*{password}" required/></td>
+					<td><input type="password" th:field="*{password}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td colspan="2"><button type="submit">Save</button> </td>
 				</tr>
@@ -38,4 +39,5 @@
 		</form>
 	</div>
 </body>
+
 </html>
