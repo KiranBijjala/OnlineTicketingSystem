@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Optional;
 
 
 @Entity
@@ -19,7 +20,7 @@ public class Ticket implements Serializable{
      @Column(name = "id", nullable = false)
      private long id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false)
 	private String name;
 	
 	@Column(name = "address", nullable = false)
@@ -33,6 +34,18 @@ public class Ticket implements Serializable{
 	
 	@Column(name = "return_date", nullable = false)
 	private Date returnDate;
+
+	@Column(name = "passengers", nullable = true)
+	private String passengers;
+	
+
+	public String getPassengers() {
+		return passengers;
+	}
+
+	public void setPassengers(String passengers) {
+		this.passengers = passengers;
+	}
 
 
 	public long getId() {

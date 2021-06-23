@@ -21,7 +21,7 @@ public class User implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
@@ -29,16 +29,16 @@ public class User implements Serializable{
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@Column(name = "address", nullable = false)
+	@Column(name = "address", nullable = true)
 	private String address;
 	
-	@Column(name = "contact", nullable = false)
+	@Column(name = "contact", nullable = true)
 	private String contact;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -78,7 +78,7 @@ public class User implements Serializable{
 		
 	}
 	
-	public User(int id, String name, String address, String contact, Date travelDate, Date returnDate) {
+	public User(long id, String name, String address, String contact, Date travelDate, Date returnDate) {
 		super();
 		this.id = id;
 		this.name = name;
