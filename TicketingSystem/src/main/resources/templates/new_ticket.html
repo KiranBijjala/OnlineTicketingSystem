@@ -4,18 +4,18 @@
 <head>
 	<link rel="stylesheet" th:href="@{css/index1.css}" />
 	<meta charset="utf-8" />
-	<title>Create New Ticket</title>
+	<title>Book a New Ticket</title>
 </head>
 
 <body>
 	<div align="center">
-		<h1>Create New Ticket</h1>
+		<h1>Book a New Ticket</h1>
 		<br />
 		<form action="#" th:action="@{/save}" th:object="${ticket}" method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
-					<td>User Name:</td>
+					<td>Name:</td>
 					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
 				<tr>
@@ -37,11 +37,12 @@
 
 				<tr>
 					<td>Passengers:</td>
-					<td><input type="text" th:field="*{passengers}" required /></td>
+					<td><input type="text" th:field="*{passengers}" /></td>
 				</tr>
 
 				<tr>
-					<td colspan="2"><button type="submit">Create Ticket</button> </td>
+					<td colspan="2"><button name="action" valu="submit" type="submit">Book a New Ticket</button> </td>
+					<td colspan="2"><button name = "action" value="cancel" type="submit">Go Back</button> </td>
 				</tr>
 			</table>
 		</form>

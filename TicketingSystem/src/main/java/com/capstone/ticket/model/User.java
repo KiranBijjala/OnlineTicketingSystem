@@ -3,9 +3,11 @@ package com.capstone.ticket.model;
 //import java.util.Arrays;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 //import java.util.*;
 
@@ -26,14 +28,37 @@ public class User implements Serializable{
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 	
+	public List<Query> getQueries() {
+		return queries;
+	}
+	public void setQueries(List<Query> queries) {
+		this.queries = queries;
+	}
+
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@Column(name = "address", nullable = true)
-	private String address;
+//	@Column(name = "address", nullable = true)
+//	private String address;
 	
-	@Column(name = "contact", nullable = true)
-	private String contact;
+	@Embedded
+	private Address address;
+	
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	 private List<Query> queries;
+	
+	public User(long id, String name, String password, String contactNumber) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.contactNumber = contactNumber;
+	}
+
+	@Column(name = "contact_number", nullable = true)
+	private String contactNumber;
+	
 	
 	public long getId() {
 		return id;
@@ -47,12 +72,23 @@ public class User implements Serializable{
 		return "User{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", password='" + password + '\'' +
 				", address='" + address + '\'' +
-				", contact='" + contact + '\'' +
+				", contact='" + contactNumber + '\'' +
 				'}';
 	}
 
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	public String getContactNumber() {
+		return contactNumber;
+	}
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
 	public String getName() {
 		return name;
 	}
@@ -60,31 +96,11 @@ public class User implements Serializable{
 		this.name = name;
 	}
 	
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-		
-	public String getContact() {
-		return contact;
-	}
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
 	
 	public User() {
 		
 	}
 	
-	public User(long id, String name, String address, String contact, Date travelDate, Date returnDate) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.contact = contact;
-	}
 
 	public String getPassword() {
 		return password;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,6 +39,10 @@ public class Ticket implements Serializable{
 	@Column(name = "passengers", nullable = true)
 	private String passengers;
 	
+	
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
+//	 private List<Passenger> passengers;
+	
 
 	public String getPassengers() {
 		return passengers;
@@ -51,6 +56,16 @@ public class Ticket implements Serializable{
 	public long getId() {
 		return id;
 	}
+
+
+//	public List<Passenger> getPassengers() {
+//		return passengers;
+//	}
+//
+//
+//	public void setPassengers(List<Passenger> passengers) {
+//		this.passengers = passengers;
+//	}
 
 
 	public void setId(long id) {

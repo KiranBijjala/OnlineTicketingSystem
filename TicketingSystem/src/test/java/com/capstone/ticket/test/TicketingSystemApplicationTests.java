@@ -1,4 +1,4 @@
-package com.capstone.ticket;
+package com.capstone.ticket.test;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

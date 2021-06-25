@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,25 +22,23 @@ public class TicketController {
 	@Autowired
 	TicketRepository ticketRepository;
 
-	// @PostMapping(value="/addticket", produces =
-	// {MediaType.APPLICATION_JSON_VALUE},consumes=
-	// {MediaType.APPLICATION_JSON_VALUE})
-	// public Ticket addTicket(@RequestBody Ticket ticket,@RequestParam
-	// Optional<String> passenger){
-	//
-	// if(!passenger.isPresent()){
-	// return ticketRepository.save(ticket);
-	// }
-	// System.out.println(ticket.toString());
-	// System.out.println("Hi");
-	// StringBuilder sb = new StringBuilder();
-	// System.out.println(passenger.get());
-	// sb = sb.append(ticket.getName()).append(",").append(passenger.get());
-	// System.out.println("String: " + sb.toString());
-	// ticket.setName(sb.toString());
-	// return ticketRepository.save(ticket);
-	//
-	// }
+	 @PostMapping(value="/addticket", produces ={MediaType.APPLICATION_JSON_VALUE},consumes= {MediaType.APPLICATION_JSON_VALUE})
+	 public Ticket addTicket(@RequestBody Ticket ticket,@RequestParam Optional<String> passenger){
+		 if(!passenger.isPresent()){
+			 return ticketRepository.save(ticket);
+		 }
+		 System.out.println(ticket.toString());
+		 System.out.println("Hi");
+		 StringBuilder sb = new StringBuilder();
+		 System.out.println(passenger.get());
+		 sb = sb.append(ticket.getName()).append(",").append(passenger.get());
+		 System.out.println("String: " + sb.toString());
+		 ticket.setName(sb.toString());
+		 
+		 ticket.setPassengers(passenger.get());
+		 return ticketRepository.save(ticket);
+	
+	 }
 
 	// @GetMapping(value="/gettickets", produces =
 	// {MediaType.APPLICATION_JSON_VALUE},consumes=
@@ -82,29 +82,26 @@ public class TicketController {
 		return model;
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket, @RequestParam String passengers) {
-		String name = ticket.getName();
-
-		Optional<String> passenger = Optional.ofNullable(passengers);
-		if (!passenger.isPresent()) {
-			ticketRepository.save(ticket);
-		}
-		// System.out.println(ticket.toString());
-		// System.out.println("Hi");
-		// StringBuilder sb = new StringBuilder();
-		// System.out.println(passenger.get());
-		// sb = sb.append(ticket.getName()).append(",").append(passenger.get());
-		// System.out.println("String: " + sb.toString());
-		// ticket.setName(sb.toString());
-		//
-		ticket.setPassengers(passenger.get());
+	@RequestMapping(value = "/save", method = RequestMethod.POST,params= "action=submit")
+	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket) {
+		
 		ticketRepository.saveAndFlush(ticket);
-
+		String name = ticket.getName();
 		System.out.println(ticket);
 		System.out.println("name" + name);
 
 		return new ModelAndView("redirect:/gettickets/" + name);
+	}
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=cancel")
+	public ModelAndView cancel(@ModelAttribute("ticket") Ticket ticket, 
+	  final BindingResult result) {
+	
+//	    model.addAttribute("message", "You clicked cancel, please re-enter employee details:");
+	    ModelAndView model = new ModelAndView("new_ticket");
+		model.addObject("ticket", ticket);
+
+		return model;
 	}
 
 	// @DeleteMapping(value="/deleteticket/{id}", produces =
