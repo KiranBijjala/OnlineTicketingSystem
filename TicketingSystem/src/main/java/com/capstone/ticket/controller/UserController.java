@@ -5,8 +5,11 @@ import com.capstone.ticket.model.Ticket;
 import com.capstone.ticket.model.User;
 import com.capstone.ticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +26,10 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
     
-    
+    @Bean 
+    public PasswordEncoder encoder() {
+    	return new BCryptPasswordEncoder();
+    }
 //    @Autowired
 //    Address address;
 
@@ -51,10 +57,10 @@ public class UserController {
 
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/login2")
     public ModelAndView loginUser() {
         User user = new User();
-        ModelAndView model = new ModelAndView("login");
+        ModelAndView model = new ModelAndView("login2");
         model.addObject("user", user);
 
         return model;
@@ -69,13 +75,13 @@ public class UserController {
         if (!existingUser.isPresent()) {
             System.out.println("User does not exist");
             model.setStatus(HttpStatus.NOT_FOUND);
-            model.setViewName("redirect:login");
+            model.setViewName("redirect:login2");
             return model;
             
-        }else if (!existingUser.get().getPassword().equals(password)) {
+        }else if (!encoder().matches(password, existingUser.get().getPassword())) {
         	model.setStatus(HttpStatus.UNAUTHORIZED);
             System.out.println("User exists but password is wrong");
-            model.setViewName("redirect:login");
+            model.setViewName("redirect:login2");
             return model;
 
          }
@@ -111,14 +117,14 @@ public class UserController {
         }
         User user = new User();
         Address address = new Address();
-        
+        String encodedPassword = encoder().encode(password);
         address.setStreet(street);
         address.setCity(city);
         address.setState(state);
         address.setZip(zip);
         
         user.setName(name);
-        user.setPassword(password);
+        user.setPassword(encodedPassword);
         user.setAddress(address);
         user.setContactNumber(contactNumber);
 

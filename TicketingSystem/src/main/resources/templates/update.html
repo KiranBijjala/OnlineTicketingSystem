@@ -11,47 +11,34 @@
 	<div align="center">
 		<h1>Update User</h1>
 		<br />
-		<form action="#" th:action="@{/updateuser/{name}}" method="post">
+		<form action="#" th:action="@{/updateuser}" th:object="${user}" method="post">
 
 			<table border="0" cellpadding="10">
-			
 				<tr>
 					<td>User Name:</td>
-					
-					<td><input type="text" th:field="*{user.name}" required /></td>
+					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="password" th:field="*{user.password}" required /></td>
+					<td><input type="password" th:field="*{password}" required /></td>
+				</tr>
+
+				<tr>
+					<td>Address:</td>
+					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
 				<tr>
-					<td>Street:</td>
-					<td><input type="text" th:field="*{address.street}" required /></td>
+					<td>Contact:</td>
+					<td><input type="password" th:field="*{password}" required /></td>
 				</tr>
-				
-				<tr>
-					<td>City:</td>
-					<td><input type="text" th:field="*{address.city}" required /></td>
-				</tr>
-				
-				<tr>
-					<td>State:</td>
-					<td><input type="text" th:field="*{address.state}" required /></td>
-				</tr>
-				
-				<tr>
-					<td>Zip code:</td>
-					<td><input type="text" th:field="*{address.zip}" required /></td>
-				</tr>
-				
-				<tr>
-					<td>Contact Number:</td>
-					<td><input type="text" th:field="*{user.contactNumber}" required /></td>
-				</tr>
-				<tr>
+			<!-- 	<tr>
 					<td colspan="2"><button type="submit">Update Profile</button> </td>
 				</tr>
-			</table>
+			 -->
+			 </table>
+			 <a class="button" href="index.html">Go Back</a>
+			&nbsp;&nbsp;&nbsp;
+			<button type="submit">Save Changes</button>
 		</form>
 	</div>
 </body>
