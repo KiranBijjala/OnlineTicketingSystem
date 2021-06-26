@@ -67,7 +67,7 @@
 		href="">Feedback</button>
 
 	<div class="form-popup" id="myForm">
-		<form action="" class="form-container">
+		<form action="#" th:action="@{/query}" method="post" class="form-container">
 			<h3 align="center">Please enter the issue you're experiencing
 				below and we'll be right with you!</h3>
 
@@ -75,13 +75,13 @@
 				<label for="name"><b>Please Enter Your Name:</b></label>
 			</div>
 			<input type="text" placeholder="Enter Your Name Here" name="name"
-				required>
+			field="name" required>
 
 			<div align="center">
-				<label for="issue"><b>Please Type Your Issue:</b></label>
+				<label for="query"><b>Please Type Your Issue:</b></label>
 			</div>
-			<input type="text" placeholder="Enter Your Issue Here" name="issue"
-				required>
+			<input type="text" placeholder="Enter Your Issue Here" name="query"
+			field="query" required>
 
 
 			<button type="submit" class="btn">Start Chatting</button>
