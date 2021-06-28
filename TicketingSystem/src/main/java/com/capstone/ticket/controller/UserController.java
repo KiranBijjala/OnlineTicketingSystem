@@ -7,6 +7,8 @@ import com.capstone.ticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -25,25 +27,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
     
-    
-//    @Autowired
-//    Address address;
-
-    // @PostMapping("/signup")
-    // public String signup(@RequestBody User user) {
-    // System.out.println("Inside Signup");
-    // System.out.println(user.getName());
-
-    // Optional<User> existingUser =
-    // Optional.ofNullable(userRepository.findByName(user.getName()));
-    // if(existingUser.isPresent()){
-    // System.out.println("User already present. Please proceed to login");
-    // }
-    // userRepository.save(user);
-
-    // return "Sign up successful";
-    // }
-
+    public PasswordEncoder encoder() {
+    	return new BCryptPasswordEncoder();
+    }
 
     @RequestMapping("/")
     public ModelAndView viewHomePage() {
@@ -68,27 +54,8 @@ public class UserController {
         Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(name));
 
         ModelAndView model = new ModelAndView();
-//        if (!existingUser.isPresent()) {
-//            System.out.println("User does not exist");
-//            model.setStatus(HttpStatus.NOT_FOUND);
-//            model.setViewName("redirect:login");
-//            return model;
-//            
-//        }else if (!existingUser.get().getPassword().equals(password)) {
-//        	model.setStatus(HttpStatus.UNAUTHORIZED);
-//            System.out.println("User exists but password is wrong");
-//            modelMap.put("error", "Invalid Account");
-//            model.setViewName("redirect:login");
-//            return model;
-//
-//         }
-//        session.setAttribute("username", name);
-//        System.out.println("User logged in successfully");
-//    	model.setStatus(HttpStatus.OK);
-//        model.setViewName("redirect:gettickets/" + name);
-//        return model;	
         
-        if(existingUser.isPresent() && existingUser.get().getPassword().equals(password)) {
+        if(existingUser.isPresent() && encoder().matches(password, existingUser.get().getPassword())) {
         	session.setAttribute("username", name);
             System.out.println("User logged in successfully");
         	model.setStatus(HttpStatus.OK);
@@ -139,6 +106,7 @@ public class UserController {
             
         }
         User user = new User();
+        String encodedPassword = encoder().encode(password);
         Address address = new Address();
         
         
@@ -149,7 +117,7 @@ public class UserController {
         
         
         user.setName(name);
-        user.setPassword(password);
+        user.setPassword(encodedPassword);
         user.setAddress(address);
         user.setContactNumber(contactNumber);
         
@@ -196,14 +164,15 @@ public class UserController {
         }
         
         Address address = new Address();
-        
+        String encodedPassword = encoder().encode(password);
+
         address.setStreet(street);
         address.setCity(city);
         address.setState(state);
         address.setZip(zip);
         
         existingUser.get().setName(name);
-        existingUser.get().setPassword(password);
+        existingUser.get().setPassword(encodedPassword);
         existingUser.get().setAddress(address);
         existingUser.get().setContactNumber(contactNumber);
 
