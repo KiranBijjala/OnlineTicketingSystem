@@ -8,9 +8,14 @@
 </head>
 
 <body>
+	<div class="hero-image">
+		<div class="hero-text">
+			<h1>Sign Up User</h1>
+		</div>
+	</div>
+	<br>
+	<br>
 	<div align="center">
-		<h1>Sign Up User</h1>
-		<br />
 		<form action="#" th:action="@{/signupuser}" method="post">
 
 			<table border="0" cellpadding="10">
@@ -26,41 +31,41 @@
 					<td>Street:</td>
 					<td><input type="text" th:field="*{address.street}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>City:</td>
 					<td><input type="text" th:field="*{address.city}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>State:</td>
 					<td><input type="text" th:field="*{address.state}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Zip code:</td>
 					<td><input type="text" th:field="*{address.zip}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Contact Number:</td>
 					<td><input type="text" th:field="*{user.contactNumber}" required /></td>
 				</tr>
 				<tr>
-					<td colspan="2"><button onclick = "saveData()" type="submit">Sign Up</button> </td>
+					<td colspan="2"><button onclick="saveData()" type="submit">Sign Up</button> </td>
 				</tr>
 			</table>
 		</form>
 	</div>
-	
-	
+
+
 	<script>
-	
-	
-	function saveData(){
-		alert("User Signup successful");
-	}
-	
+
+
+		function saveData() {
+			alert("User Signup successful");
+		}
+
 	</script>
 </body>
 

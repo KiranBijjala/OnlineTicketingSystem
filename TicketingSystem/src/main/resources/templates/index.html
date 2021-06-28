@@ -10,23 +10,25 @@
 </head>
 
 <body>
+    <div class="hero-image">
+        <div class="hero-text">
+            <h1>Tickets List</h1>
+        </div>
+    </div>
+    <br />
+    <br />
 
-  
-  <a class="button1" href="/logout">Logout</a>
-        <br /><br />
-        
-        
+    <a class="button1" href="/">Logout</a>
+    <br /><br />
+
+
     <div align="center">
-    
-        <h1>Tickets List</h1>
-        
-        
         <a class="button" href="/addticket">Book a New Ticket </a>
         &nbsp;&nbsp;&nbsp;
         <a class="button" href="/updateprofile">Edit User Profile</a>
-        
-         
-      
+
+
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mt-5 mb-5">
@@ -65,8 +67,103 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-    	var newname = sessionStorage.getItem("user");
+    <button class="open-button" onclick="openQueryForm()">Have a Query?</button>
+    <button class="open-feedback-button" onclick="openFeedbackForm()">Feedback</button>
+
+    <div class="form-popup" id="myForm">
+        <form action="#" th:action="@{/query}" method="post" class="form-container">
+            <h3 align="center">
+                Please enter the issue you're experiencing below and we'll be right
+                with you!
+            </h3>
+
+            <div align="center">
+                <label for="name"><b>Please Enter Your Name:</b></label>
+            </div>
+            <input type="text" placeholder="Enter Your Name Here" name="name" field="name" required />
+
+            <div align="center">
+                <label for="query"><b>Please Type Your Issue:</b></label>
+            </div>
+            <input type="text" placeholder="Enter Your Issue Here" name="query" field="query" required />
+
+            <button type="submit" class="btn">Submit Query</button>
+            <button type="button" class="btn cancel" onclick="closeQueryForm()">
+                Close
+            </button>
+        </form>
+    </div>
+
+    <div class="form-feedback-popup" id="myFormFeedback">
+        <form action="#" th:action="@{/feedback}" method="post" class="form-container">
+            <h3 align="center">
+                Please enter your feedback!
+            </h3>
+            <h3 align="center">Please rate your experience from 1 - 5</h3>
+
+            <form method="post" action="#action-url">
+                <label>1. Purchasing Tickets</label><br>
+
+                <span class="star-rating">
+                    <input type="radio" field="rating1" name="rating1" value="1"><i></i>
+                    <input type="radio" field="rating1" name="rating1" value="2"><i></i>
+                    <input type="radio" field="rating1" name="rating1" value="3"><i></i>
+                    <input type="radio" field="rating1" name="rating1" value="4"><i></i>
+                    <input type="radio" field="rating1" name="rating1" value="5"><i></i>
+                </span>
+
+                <div class="clear"></div>
+                <hr class="survey-hr">
+                <label>2. Refunding Tickets</label><br>
+                <span class="star-rating">
+                    <input type="radio" field="rating2" name="rating2" value="1"><i></i>
+                    <input type="radio" field="rating2" name="rating2" value="2"><i></i>
+                    <input type="radio" field="rating2" name="rating2" value="3"><i></i>
+                    <input type="radio" field="rating2" name="rating2" value="4"><i></i>
+                    <input type="radio" field="rating2" name="rating2" value="5"><i></i>
+                </span>
+                <div class="clear"></div>
+                <hr class="survey-hr">
+                <label>3. Accessing Customer Support</label><br>
+                <span class="star-rating" style="border-color: #6772e5;">
+                    <input type="radio" field="rating3" name="rating3" value="1"><i></i>
+                    <input type="radio" field="rating3" name="rating3" value="2"><i></i>
+                    <input type="radio" field="rating3" name="rating3" value="3"><i></i>
+                    <input type="radio" field="rating3" name="rating3" value="4"><i></i>
+                    <input type="radio" field="rating3" name="rating3" value="5"><i></i>
+                </span>
+                <div><br></div>
+                <button type="submit" class="btn">Submit Your Feedback</button>
+                <button type="button" class="btn cancel" onclick="closeFeedBackForm()">
+                    Close
+                </button>
+            </form>
+    </div>
+
+    <div class="hero-image2">
+        <div class="display-AD-text">
+            <h1>50% OFF USING CODE:</h1>
+        </div>
+        <div class="display-AD-color-text">
+            <h1>BRILLIO</h1>
+        </div>
+    </div>
+    <script>
+        function openQueryForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeQueryForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        function openFeedbackForm() {
+            document.getElementById("myFormFeedback").style.display = "block";
+        }
+
+        function closeFeedBackForm() {
+            document.getElementById("myFormFeedback").style.display = "none";
+        }
     </script>
 </body>
 

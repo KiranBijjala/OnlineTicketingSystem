@@ -53,10 +53,10 @@ public class UserController {
 
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/login2")
     public ModelAndView login() {
         User user = new User();
-        ModelAndView model = new ModelAndView("login");
+        ModelAndView model = new ModelAndView("login2");
         model.addObject("user", user);
 
         return model;
@@ -157,7 +157,7 @@ public class UserController {
         session.setAttribute("contactNumber",contactNumber);
 
         userRepository.save(user);
-        return new ModelAndView("redirect:login" );
+        return new ModelAndView("redirect:login2" );
     }
     
     

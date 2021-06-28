@@ -8,14 +8,18 @@
 </head>
 
 <body>
+	<div class="hero-image">
+		<div class="hero-text">
+			<h1>Login User</h1>
+		</div>
+	</div>
+	<br>
+	<br>
 	<div align="center">
-		<h1>Login User</h1>
-		<br />
-		
 		<form action="#" th:action="@{/loginuser}" method="post">
 			<table border="0" cellpadding="10">
-			
-			<label th:text="${error}" th:field="*{error}"></label>
+
+				<label th:text="${error}" th:field="*{error}"></label>
 				<tr>
 					<td>User Name:</td>
 					<td><input type="text" id="name" th:field="*{user.name}" required /></td>
@@ -25,32 +29,32 @@
 					<td><input type="password" id="password" th:field="*{user.password}" required /></td>
 				</tr>
 				<tr>
-					<td align="center" colspan="2"><button onClick = "saveData()" type="submit">Login</button> </td>
+					<td align="center" colspan="2"><button onClick="saveData()" type="submit">Login</button> </td>
 				</tr>
 			</table>
 		</form>
 	</div>
 
 
-  
 
-  <script type="text/javascript"> 
-  /* function savedata() { 
+
+	<script type="text/javascript">
+		/* function savedata() { 
+		    
+		  var input1 = document.getElementById("name");
+		  
+		  sessionStorage.setItem("user", input1.value);
 	  
-    var input1 = document.getElementById("name");
-    
-    sessionStorage.setItem("user", input1.value);
+		  var input2 = document.getElementById("password");
+		  
+		  sessionStorage.setItem("password", input2.value);
+		  return true;
+		}  */
 
-    var input2 = document.getElementById("password");
-    
-    sessionStorage.setItem("password", input2.value);
-    return true;
-  }  */
-  
-  function saveData(){
-		alert("User Login successful");
-	}
-  </script> 
+		function saveData() {
+			alert("User Login successful");
+		}
+	</script>
 
 
 </body>
