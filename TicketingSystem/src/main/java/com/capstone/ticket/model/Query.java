@@ -49,7 +49,7 @@ public class Query implements Serializable{
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER, optional=true)
-	@JsonIgnoreProperties({"queries"})
-	@JoinColumn(name="user_name")
+	@JsonIgnoreProperties({"queries","feedbacks"})
+	@JoinColumn(name="user_name",referencedColumnName = "name")
 	private User user;
 }

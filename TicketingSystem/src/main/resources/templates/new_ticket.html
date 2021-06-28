@@ -23,7 +23,7 @@
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>Name:</td>
-					<td><input type="text" th:field="*{name}" required /></td>
+					<td><input type="text" th:field = "*{name}" required /></td>
 				</tr>
 				<tr>
 					<td>Address:</td>
@@ -43,11 +43,11 @@
 				</tr>
 				<tr>
 					<td>Travel Date:</td>
-					<td><input type="date" th:field="*{travelDate}" required /></td>
+					<td><input type="date" id="travelDate" th:field="*{travelDate}" required /></td>
 				</tr>
 				<tr>
 					<td>Return Date:</td>
-					<td><input type="date" th:field="*{returnDate}" required /></td>
+					<td><input type="date" id ="returnDate" th:field="*{returnDate}" required /></td>
 				</tr>
 
 				<tr>
@@ -71,8 +71,15 @@
 					</td>
 				</tr>
 			</table>
+			
+			
 		</form>
 	</div>
 </body>
+
+
+
+
+
 
 </html>

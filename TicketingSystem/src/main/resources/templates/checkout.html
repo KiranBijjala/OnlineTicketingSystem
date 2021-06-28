@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{css/index1.css}" />
+	<meta charset="utf-8" />
+	<title>Book a New Ticket</title>
+</head>
+
+<body>
+	<div align="center">
+		<h1>Book a New Ticket</h1>
+		<br />
+		<form action="#" th:action="@{/checkout}" th:object="${ticket}" method="post">
+
+			<div class="container">
+            <div class="row">
+                <div class="col-lg-10 mt-5 mb-5">
+                    <table class="styled-table" style="width: 80%">
+                       
+                        <tbody>
+                            <tr align="center" th:each="ticket : ${listTickets}">
+                                <td th:text="${ticket.id}">Ticket ID</td>
+                                <td th:text="${ticket.name}">Name</td>
+                                <td th:text="${ticket.address}">Address</td>
+                                <td th:text="${ticket.contact}">Contact</td>
+                                <td th:text="${ticket.travelDate}">Travel Date</td>
+                                <td th:text="${ticket.returnDate}">Return Date</td>
+                                <td th:text="${ticket.passengers}">Return Date</td>
+                                <td>
+
+                                    <a class="oButton" th:href="@{'/edit/' + ${ticket.id}}">Edit</a>
+                                    &nbsp;
+                                    <a class="oButton" th:href="@{'/delete/' + ${ticket.id}}">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+		</form>
+	</div>
+</body>
+
+</html>

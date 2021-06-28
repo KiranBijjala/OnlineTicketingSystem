@@ -17,15 +17,18 @@
 	<br>
 	<br>
 	<div align="center">
-
-		<form action="#" th:action="@{/updateuser}" th:object="${user}"
-			method="post">
+		<h1>Update User</h1>
+		<br />
+		<form action="#" th:action="@{/updateuser}" method="post">
 
 			<table border="0" cellpadding="10">
-				<tr>
+			
+				 <tr>
 					<td>User Name:</td>
-					<td><input type="text" th:field="*{name}" required /></td>
-				</tr>
+					
+					
+					<td><input type="text" th:field="*{user.name}" required /></td>
+				</tr> 
 				<tr>
 					<td>Password:</td>
 					<td><input type="password" th:field="*{password}" required /></td>

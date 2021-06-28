@@ -11,30 +11,19 @@
 	<div align="center">
 		<h1>Add Passengers to the Ticket</h1>
 		<br />
-		<form action="#" th:action="@{/save}" th:object="${ticket}" method="post">
+		<form action="#" th:action="@{/save1}" th:object="${ticket}" method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>User Name:</td>
 					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
-				<tr>
-					<td>Address:</td>
-					<td><input type="text" th:field="*{address}" required /></td>
-				</tr>
+				
 				<tr>
 					<td>Contact:</td>
 					<td><input type="text" th:field="*{contact}" required /></td>
 				</tr>
-				<tr>
-					<td>Travel Date:</td>
-					<td><input type="date" th:field="*{travelDate}" required /></td>
-				</tr>
-				<tr>
-					<td>Return Date:</td>
-					<td><input type="date" th:field="*{returnDate}" required /></td>
-				</tr>
-				<tr>
+				
 					<td colspan="2"><button type="submit">Save</button> </td>
 				</tr>
 			</table>

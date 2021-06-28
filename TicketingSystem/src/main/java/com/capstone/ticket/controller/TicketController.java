@@ -81,9 +81,23 @@ public class TicketController {
 
 		return model;
 	}
+	
+	@RequestMapping("/checkout")
+	public ModelAndView checkout() {
+		Ticket ticket = new Ticket();
+		ModelAndView model = new ModelAndView("checkout");
+		model.addObject("ticket", ticket);
+
+		return model;
+	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket) {
+		
+		if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0) {
+			System.out.println("Ticket");
+			
+		}
 		
 		ticketRepository.saveAndFlush(ticket);
 		String name = ticket.getName();
@@ -91,9 +105,10 @@ public class TicketController {
 		System.out.println("name" + name);
 
 		return new ModelAndView("redirect:/gettickets/" + name);
-	}
 	
-//	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=cancel")
+	}
+//	
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
 //	public ModelAndView cancel(@ModelAttribute("ticket") Ticket ticket, 
 //	  final BindingResult result) {
 //	

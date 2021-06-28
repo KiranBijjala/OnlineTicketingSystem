@@ -7,10 +7,69 @@
     <title>Ticket Manager</title>
     <div class="hero-image">
       <div class="hero-text">
+</head>
+
+<body>
+
+  
+  <a class="button1" href="/logout">Logout</a>
+        <br /><br />
+        
+        
+    <div align="center">
+    
         <h1>Tickets List</h1>
       </div>
+        
+        
+        <a class="button" href="/addticket">Book a New Ticket </a>
+        &nbsp;&nbsp;&nbsp;
+        <a class="button" href="/updateprofile">Edit User Profile</a>
+        
+         
+      
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mt-5 mb-5">
+                    <table class="styled-table" style="width: 80%">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Contact Number</th>
+                                <th>Travel Date</th>
+                                <th>Return Date</th>
+                                <th>Passengers</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr align="center" th:each="ticket : ${listTickets}">
+                                <td th:text="${ticket.id}">Ticket ID</td>
+                                <td th:text="${ticket.name}">Name</td>
+                                <td th:text="${ticket.address}">Address</td>
+                                <td th:text="${ticket.contact}">Contact</td>
+                                <td th:text="${ticket.travelDate}">Travel Date</td>
+                                <td th:text="${ticket.returnDate}">Return Date</td>
+                                <td th:text="${ticket.passengers}">Return Date</td>
+                                <td>
+
+                                    <a class="oButton" th:href="@{'/edit/' + ${ticket.id}}">Edit</a>
+                                    &nbsp;
+                                    <a class="oButton" th:href="@{'/delete/' + ${ticket.id}}">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-  </head>
+    <script type="text/javascript">
+    	var newname = sessionStorage.getItem("user");
+    </script>
+</body>
 
   <body>
     <br />
