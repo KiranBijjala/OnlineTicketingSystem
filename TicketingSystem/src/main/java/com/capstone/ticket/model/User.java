@@ -48,6 +48,16 @@ public class User implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	 private List<Query> queries;
 	
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	 private List<Feedback> feedbacks;
+	
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
+	}
 	public User(long id, String name, String password, String contactNumber) {
 		super();
 		this.id = id;
@@ -58,8 +68,7 @@ public class User implements Serializable{
 
 	@Column(name = "contact_number", nullable = true)
 	private String contactNumber;
-	
-	
+
 	public long getId() {
 		return id;
 	}

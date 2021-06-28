@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"com.capstone.ticket","l":"TicketingSystemApplication"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.capstone.ticket.controller","l":"UserController"}]

@@ -11,12 +11,15 @@
 	<div align="center">
 		<h1>Book a New Ticket</h1>
 		<br />
+		
+		
+		
 		<form action="#" th:action="@{/save}" th:object="${ticket}" method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>Name:</td>
-					<td><input type="text" th:field="*{name}" required /></td>
+					<td><input type="text" th:value = "${name}" required /></td>
 				</tr>
 				<tr>
 					<td>Address:</td>
@@ -28,11 +31,11 @@
 				</tr>
 				<tr>
 					<td>Travel Date:</td>
-					<td><input type="date" th:field="*{travelDate}" required /></td>
+					<td><input type="date" id="travelDate" th:field="*{travelDate}" required /></td>
 				</tr>
 				<tr>
 					<td>Return Date:</td>
-					<td><input type="date" th:field="*{returnDate}" required /></td>
+					<td><input type="date" id ="returnDate" th:field="*{returnDate}" required /></td>
 				</tr>
 
 				<tr>
@@ -41,12 +44,18 @@
 				</tr>
 
 				<tr>
-					<td colspan="2"><button name="action" valu="submit" type="submit">Book a New Ticket</button> </td>
-					<td colspan="2"><button name = "action" value="cancel" type="submit">Go Back</button> </td>
+					<td colspan="2"><button name="action" value="submit" type="submit">Book a New Ticket</button> </td>
 				</tr>
 			</table>
+			
+			
 		</form>
 	</div>
 </body>
+
+
+
+
+
 
 </html>

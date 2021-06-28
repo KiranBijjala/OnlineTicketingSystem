@@ -10,12 +10,24 @@
 </head>
 
 <body>
+
+  
+  <a class="button1" href="/logout">Logout</a>
+        <br /><br />
+        
+        
     <div align="center">
+    
+    <h1>Welcome <span th:text="${session.username}" th:unless="${session == null}">[...]</span></h1>
         <h1>Tickets List</h1>
+        
+        
         <a class="button" href="/addticket">Book a New Ticket </a>
         &nbsp;&nbsp;&nbsp;
         <a class="button" href="/updateprofile">Edit User Profile</a>
-        <br /><br />
+        
+         
+      
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mt-5 mb-5">
@@ -54,6 +66,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    	var newname = sessionStorage.getItem("user");
+    </script>
 </body>
 
 </html>

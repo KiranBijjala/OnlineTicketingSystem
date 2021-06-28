@@ -45,15 +45,15 @@ public class TestWebApp extends TicketingSystemApplicationTests
 //    }
 	
     
-    @Test
-    public void getUser() throws Exception 
-    {
-    	mockMvc.perform(get("/getuser/{id}", 1))
-    	.andExpect(content().contentType("application/json;charset=UTF-8"))
-          .andDo(print())
-          .andExpect(status().isOk())
-          .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
-    }
+//    @Test
+//    public void getUser() throws Exception 
+//    {
+//    	mockMvc.perform(get("/getuser/{id}", 1))
+//    	.andExpect(content().contentType("application/json;charset=UTF-8"))
+//          .andDo(print())
+//          .andExpect(status().isOk())
+//          .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
+//    }
 	
 
 }
