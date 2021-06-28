@@ -19,7 +19,7 @@
       <a class="button" href="/addticket">Purchase a Ticket</a>
       &nbsp;&nbsp;&nbsp;
       <a class="button" href="/updateprofile">Edit My Profile</a>
-      &nbsp;&nbsp;&nbsp; <a class="button" href="/checkout">Checkout</a>
+      &nbsp;&nbsp;&nbsp; <a class="button" href="/signout">Sign Out</a>
       <br />
       <br />
 
@@ -52,7 +52,6 @@
                     <a class="oButton" th:href="@{'/edit/' + ${ticket.id}}"
                       >Edit</a
                     >
-                    &nbsp;
                     <a class="oButton" th:href="@{'/delete/' + ${ticket.id}}"
                       >Delete</a
                     >

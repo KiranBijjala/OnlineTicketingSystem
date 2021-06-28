@@ -82,7 +82,7 @@ public class TicketController {
 		return model;
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST,params= "action=submit")
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket) {
 		
 		ticketRepository.saveAndFlush(ticket);
@@ -93,16 +93,16 @@ public class TicketController {
 		return new ModelAndView("redirect:/gettickets/" + name);
 	}
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=cancel")
-	public ModelAndView cancel(@ModelAttribute("ticket") Ticket ticket, 
-	  final BindingResult result) {
-	
-//	    model.addAttribute("message", "You clicked cancel, please re-enter employee details:");
-	    ModelAndView model = new ModelAndView("new_ticket");
-		model.addObject("ticket", ticket);
-
-		return model;
-	}
+//	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "action=cancel")
+//	public ModelAndView cancel(@ModelAttribute("ticket") Ticket ticket, 
+//	  final BindingResult result) {
+//	
+////	    model.addAttribute("message", "You clicked cancel, please re-enter employee details:");
+//	    ModelAndView model = new ModelAndView("new_ticket");
+//		model.addObject("ticket", ticket);
+//
+//		return model;
+//	}
 
 	// @DeleteMapping(value="/deleteticket/{id}", produces =
 	// {MediaType.APPLICATION_JSON_VALUE},consumes=

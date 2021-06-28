@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" th:href="@{css/index1.css}" />
-	<meta charset="utf-8" />
-	<title>User Login page</title>
+<link rel="stylesheet" th:href="@{css/index1.css}" />
+<meta charset="utf-8" />
+<title>User Login page</title>
 </head>
 
 <body>
+	<div class="hero-image">
+		<div class="hero-text">
+			<h1>Update User</h1>
+		</div>
+	</div>
+	<br>
+	<br>
 	<div align="center">
-		<h1>Update User</h1>
-		<br />
-		<form action="#" th:action="@{/updateuser}" th:object="${user}" method="post">
+
+		<form action="#" th:action="@{/updateuser}" th:object="${user}"
+			method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
@@ -31,13 +39,12 @@
 					<td>Contact:</td>
 					<td><input type="password" th:field="*{password}" required /></td>
 				</tr>
-			<!-- 	<tr>
+				<!-- 	<tr>
 					<td colspan="2"><button type="submit">Update Profile</button> </td>
 				</tr>
 			 -->
-			 </table>
-			 <a class="button" href="index.html">Go Back</a>
-			&nbsp;&nbsp;&nbsp;
+			</table>
+			<a class="button" href="index.html">Go Back</a> &nbsp;&nbsp;&nbsp;
 			<button type="submit">Save Changes</button>
 		</form>
 	</div>

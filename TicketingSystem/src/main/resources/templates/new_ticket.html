@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" th:href="@{css/index1.css}" />
-	<meta charset="utf-8" />
-	<title>Book a New Ticket</title>
+<link rel="stylesheet" th:href="@{css/index1.css}" />
+<meta charset="utf-8" />
+<title>Book a New Ticket</title>
 </head>
 
 <body>
+<div class="hero-image">
+		<div class="hero-text">
+			<h1>Booking a New Ticket</h1>
+		</div>
+	</div>
+	<br>
+	<br>
 	<div align="center">
-		<h1>Book a New Ticket</h1>
-		<br />
-		<form action="#" th:action="@{/save}" th:object="${ticket}" method="post">
+		<form action="#" th:action="@{/save}" th:object="${ticket}"
+			method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
@@ -27,6 +34,14 @@
 					<td><input type="text" th:field="*{contact}" required /></td>
 				</tr>
 				<tr>
+					<td>Traveling From:</td>
+					<td><input type="text" /></td>
+				</tr>
+				<tr>
+					<td>Traveling To:</td>
+					<td><input type="text"/></td>
+				</tr>
+				<tr>
 					<td>Travel Date:</td>
 					<td><input type="date" th:field="*{travelDate}" required /></td>
 				</tr>
@@ -39,10 +54,21 @@
 					<td>Passengers:</td>
 					<td><input type="text" th:field="*{passengers}" /></td>
 				</tr>
+				
+				<tr>
+					<td>Coupon Code:</td>
+					<td><input type="text"/></td>
+				</tr>
 
 				<tr>
-					<td colspan="2"><button name="action" valu="submit" type="submit">Book a New Ticket</button> </td>
-					<td colspan="2"><button name = "action" value="cancel" type="submit">Go Back</button> </td>
+					<td colspan="2">
+					<!-- Need to save redirect to previous address page here in the button -->
+						<button name="action" value="cancel" type="reset">Go Back</button>
+						&nbsp;&nbsp;
+						<button name="action" value="cancel" type="reset">Clear</button>
+						&nbsp;&nbsp;
+						<button name="action" value="submit" type="submit">Book a New Ticket</button> 
+					</td>
 				</tr>
 			</table>
 		</form>

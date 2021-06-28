@@ -1,1 +1,6 @@
 com.capstone.ticket
+com.capstone.ticket.controller
+com.capstone.ticket.model
+com.capstone.ticket.repository
+com.capstone.ticket.service
+com.capstone.ticket.test

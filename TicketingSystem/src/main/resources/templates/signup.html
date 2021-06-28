@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" th:href="@{css/index1.css}" />
-	<meta charset="utf-8" />
-	<title>User Login page</title>
+<link rel="stylesheet" th:href="@{css/index1.css}" />
+<meta charset="utf-8" />
+<title>User Login page</title>
 </head>
 
 <body>
+	<div class="hero-image">
+		<div class="hero-text">
+			<h1>Sign Up User</h1>
+		</div>
+	</div>
+	<br>
+	<br>
 	<div align="center">
-		<h1>Sign Up User</h1>
-		<br />
 		<form action="#" th:action="@{/signupuser}" method="post">
 
 			<table border="0" cellpadding="10">
@@ -20,34 +26,36 @@
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="password" th:field="*{user.password}" required /></td>
+					<td><input type="password" th:field="*{user.password}"
+						required /></td>
 				</tr>
 				<tr>
 					<td>Street:</td>
 					<td><input type="text" th:field="*{address.street}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>City:</td>
 					<td><input type="text" th:field="*{address.city}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>State:</td>
 					<td><input type="text" th:field="*{address.state}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Zip code:</td>
 					<td><input type="text" th:field="*{address.zip}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Contact Number:</td>
-					<td><input type="text" th:field="*{user.contactNumber}" required /></td>
+					<td><input type="text" th:field="*{user.contactNumber}"
+						required /></td>
 				</tr>
 				<tr>
-					<td colspan="2"><button type="submit">Sign Up</button> </td>
+					<td colspan="2"><button type="submit">Sign Up</button></td>
 				</tr>
 			</table>
 		</form>
