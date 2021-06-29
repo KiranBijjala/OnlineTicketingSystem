@@ -8,9 +8,13 @@
 </head>
 
 <body>
+<div class="hero-image">
+		<div class="hero-text">
+			<h1>Book a New Ticket</h1>
+		</div>
+		<a class="button1" href="/">Logout</a>
+	</div>
 	<div align="center">
-		<h1>Book a New Ticket</h1>
-		<br />
 		<form action="#" th:action="@{/checkout}" th:object="${ticket}" method="post">
 
 			<div class="container">
