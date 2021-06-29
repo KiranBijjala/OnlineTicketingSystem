@@ -52,7 +52,10 @@
 					<td><input type="text" th:field="*{user.contactNumber}" required /></td>
 				</tr>
 				<tr>
-					<td colspan="2"><button onclick="saveData()" type="submit">Sign Up</button> </td>
+					<td colspan="2">
+						<button name="action" value="cancel" type="reset">Clear</button>
+						&nbsp;&nbsp;
+						<button onclick="saveData()" type="submit">Sign Up</button> </td>
 				</tr>
 			</table>
 		</form>

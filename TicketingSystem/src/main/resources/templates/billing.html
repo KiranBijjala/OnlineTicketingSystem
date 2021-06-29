@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" th:href="@{css/index1.css}" />
+  <meta charset="utf-8" />
+  <title>Billing Page</title>
+</head>
+
+<body onload="defaultPrice()">
+  <div class="hero-image">
+    <div class="hero-text">
+      <h1>Billing</h1>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div align="center" class="row-30">
+    <div class="col-30">
+      <div class="container">
+        <form action="/action_page.php">
+
+          <div class="row-75">
+            <div class="col-25">
+              <div class="col-12">
+                <div class="container">
+                  <h4 align="center">
+                    Cart <span style="color: black"> <i class="fa fa-shopping-cart"></i>
+                    </span>
+                  </h4>
+                  <p>
+                    <a>Ticket - </a> <span>$100</span>
+                  </p>
+                  <input onblur="getPrice()" id="discount">&nbsp;&nbsp;Discount
+                  Code <br> <br>
+                  <hr>
+                  <p align="center">
+                    Total - $<span style="color: black"> <input readonly id="total">
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <input type="submit" value="Continue to checkout" class="btn">
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+<script type="text/javascript">
+  defaultPrice = function () {
+    document.getElementById("total").value = "100";
+  }
+  getPrice = function () {
+    var arr = document.getElementById('discount').value;
+    if (arr === "BRILLIO") {
+      document.getElementById("total").value = 50;
+    } else {
+      document.getElementById("total").value = 100;
+    }
+  }
+</script>
+
+</html>
+
+
+</body>
+
+</html>

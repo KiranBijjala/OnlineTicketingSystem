@@ -1,30 +1,38 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" th:href="@{css/index1.css}" />
-	<meta charset="utf-8" />
-	<title>Edit Ticket</title>
+<link rel="stylesheet" th:href="@{css/index1.css}" />
+<meta charset="utf-8" />
+<title>Edit Ticket</title>
 </head>
 
 <body>
 	<div align="center">
 		<h1>Add Passengers to the Ticket</h1>
 		<br />
-		<form action="#" th:action="@{/save1}" th:object="${ticket}" method="post">
+		<form action="#" th:action="@{/save1}" th:object="${ticket}"
+			method="post">
 
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>User Name:</td>
 					<td><input type="text" th:field="*{name}" required /></td>
 				</tr>
-				
+
 				<tr>
 					<td>Contact:</td>
 					<td><input type="text" th:field="*{contact}" required /></td>
 				</tr>
-				
-					<td colspan="2"><button type="submit">Save</button> </td>
+
+				<td colspan="2">
+					<button name="action" value="cancel" type="reset">Go Back</button>
+					&nbsp;&nbsp;
+					<button name="action" value="cancel" type="reset">Clear</button>
+					&nbsp;&nbsp;
+					<button type="submit">Save</button>
+				</td>
 				</tr>
 			</table>
 		</form>
