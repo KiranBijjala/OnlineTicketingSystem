@@ -17,33 +17,27 @@ import com.capstone.ticket.repository.UserRepository;
 
 @RestController
 public class FeedbackController {
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	FeedbackRepository feedbackRepository;
-	
-	
+
 	@RequestMapping(value = "/feedback", method = RequestMethod.POST)
-    public Feedback feedbackUser(@ModelAttribute("feedback") Feedback feedback, @RequestParam String name) {
-		
-		System.out.println("Inside Feedback Query");
+	public Feedback feedbackUser(@ModelAttribute("feedback") Feedback feedback, @RequestParam String name) {
+
 		Optional<User> user = Optional.ofNullable(userRepository.findByName(name));
-		
+
 		Feedback f = new Feedback();
-		
+
 		f.setPurchaseRating(feedback.getPurchaseRating());
 		f.setSupportRating(feedback.getSupportRating());
 		f.setRefundRating(feedback.getRefundRating());
 		f.setUser(user.get());
-		
 
-		
-		System.out.println(user.get().getFeedbacks());
-		
 		return feedbackRepository.saveAndFlush(f);
-        
-    }
+
+	}
 
 }

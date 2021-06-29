@@ -20,27 +20,23 @@ import com.capstone.ticket.repository.UserRepository;
 @RestController
 public class QueryController {
 
-	
 	@Autowired
 	QueryRepository queryRepository;
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
-	
+
 	@RequestMapping(value = "/query", method = RequestMethod.POST)
-    public Query queryUser(@RequestParam String name, @RequestParam String query) {
-		
-		System.out.println("Inside Post Query");
+	public Query queryUser(@RequestParam String name, @RequestParam String query) {
+
 		Optional<User> user = Optional.ofNullable(userRepository.findByName(name));
-		
+
 		Query q = new Query();
-		
+
 		q.setQuery(query);
 		q.setUser(user.get());
-		
-		System.out.print(user.get().getQueries());
+
 		return queryRepository.saveAndFlush(q);
-        
-    }
+
+	}
 }

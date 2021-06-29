@@ -18,9 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table (name = "feedback")
 public class Feedback implements Serializable{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 

@@ -16,9 +16,7 @@ import java.util.List;
 @Table(name = "users")
 public class User implements Serializable{
 	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,8 +36,7 @@ public class User implements Serializable{
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-//	@Column(name = "address", nullable = true)
-//	private String address;
+
 	
 	@Embedded
 	private Address address;
