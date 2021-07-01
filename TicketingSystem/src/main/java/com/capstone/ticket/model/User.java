@@ -6,7 +6,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.List;
 
 //import java.util.*;
@@ -16,9 +15,7 @@ import java.util.List;
 @Table(name = "users")
 public class User implements Serializable{
 	
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -45,8 +42,11 @@ public class User implements Serializable{
 	private Address address;
 	
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.PERSIST)
 	 private List<Query> queries;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.PERSIST)
+	 private List<Ticket> tickets;
 	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -109,8 +109,13 @@ public class User implements Serializable{
 	public User() {
 		
 	}
-	
 
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
 	public String getPassword() {
 		return password;
 	}

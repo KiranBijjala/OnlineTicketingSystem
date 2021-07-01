@@ -3,6 +3,8 @@ package com.capstone.ticket.model;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -24,8 +26,11 @@ public class Ticket implements Serializable{
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "address", nullable = false)
-	private String address;
+	@Column(name = "departure_location", nullable = false)
+	private String departureLocation;
+	
+	@Column(name = "destination_location", nullable = false)
+	private String destinationLocation;
 	
 	@Column(name = "contact", nullable = false)
 	private String contact;
@@ -43,11 +48,21 @@ public class Ticket implements Serializable{
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket")
 //	 private List<Passenger> passengers;
 	
+	
+	@ManyToOne(fetch = FetchType.EAGER, optional=true)
+	@JsonIgnoreProperties({"queries","feedbacks"})
+	@JoinColumn(name="user_name", referencedColumnName="name")
+	private User user;
 
 	public String getPassengers() {
 		return passengers;
 	}
-
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public void setPassengers(String passengers) {
 		this.passengers = passengers;
 	}
@@ -83,14 +98,14 @@ public class Ticket implements Serializable{
 	}
 
 
-	public String getAddress() {
-		return address;
-	}
-
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
+//	public String getAddress() {
+//		return address;
+//	}
+//
+//
+//	public void setAddress(String address) {
+//		this.address = address;
+//	}
 
 
 	public String getContact() {
@@ -98,6 +113,18 @@ public class Ticket implements Serializable{
 	}
 
 
+	public String getDepartureLocation() {
+		return departureLocation;
+	}
+	public void setDepartureLocation(String departureLocation) {
+		this.departureLocation = departureLocation;
+	}
+	public String getDestinationLocation() {
+		return destinationLocation;
+	}
+	public void setDestinationLocation(String destinationLocation) {
+		this.destinationLocation = destinationLocation;
+	}
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
@@ -122,27 +149,44 @@ public class Ticket implements Serializable{
 		this.returnDate = returnDate;
 	}
 
-	public Ticket(long id, String name, String address, String contact, Date travelDate, Date returnDate) {
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.contact = contact;
-		this.travelDate = travelDate;
-		this.returnDate = returnDate;
-	}
-
-	public Ticket() {
-	}
+	
 
 	@Override
 	public String toString() {
-		return "Ticket{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", address='" + address + '\'' +
-				", contact='" + contact + '\'' +
-				", travelDate=" + travelDate +
-				", returnDate=" + returnDate +
-				'}';
+		return "Ticket [id=" + id + ", name=" + name + ", depatureLocation=" + departureLocation
+				+ ", destinationLocation=" + destinationLocation + ", contact=" + contact + ", travelDate=" + travelDate
+				+ ", returnDate=" + returnDate + ", passengers=" + passengers + ", user=" + user + "]";
 	}
+	public Ticket(long id, String name, String departureLocation, String destinationLocation, String contact,
+			Date travelDate, Date returnDate, String passengers, User user) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.departureLocation = departureLocation;
+		this.destinationLocation = destinationLocation;
+		this.contact = contact;
+		this.travelDate = travelDate;
+		this.returnDate = returnDate;
+		this.passengers = passengers;
+		this.user = user;
+	}
+	
+	
+	public Ticket() {
+	}
+//public Ticket(long id, String name, String departureLocation, String destinationLocation, String contact,
+//		Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
+//	super();
+//	this.id = id;
+//	this.name = name;
+//	this.departureLocation = departureLocation;
+//	this.destinationLocation = destinationLocation;
+//	this.contact = contact;
+//	this.travelDate = travelDate;
+//	this.returnDate = returnDate;
+//	this.passengers = passengers;
+//	this.user = user;
+//}
+
+	
 }

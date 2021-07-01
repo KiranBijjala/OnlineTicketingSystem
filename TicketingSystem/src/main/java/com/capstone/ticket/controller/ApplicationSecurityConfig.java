@@ -26,8 +26,4 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         httpSecurity.headers().frameOptions().disable();
 
     }
-
-    
-
-
 }

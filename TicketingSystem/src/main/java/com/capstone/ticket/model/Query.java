@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table (name = "query")
 public class Query implements Serializable{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 
@@ -50,6 +48,6 @@ public class Query implements Serializable{
 
 	@ManyToOne(fetch = FetchType.EAGER, optional=true)
 	@JsonIgnoreProperties({"queries","feedbacks"})
-	@JoinColumn(name="user_name",referencedColumnName = "name")
+	@JoinColumn(name="user_name")
 	private User user;
 }
