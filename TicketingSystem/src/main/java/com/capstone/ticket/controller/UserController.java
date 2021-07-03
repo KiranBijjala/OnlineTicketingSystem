@@ -1,8 +1,12 @@
 package com.capstone.ticket.controller;
 
 import com.capstone.ticket.model.Address;
+
+import com.capstone.ticket.model.Query;
 import com.capstone.ticket.model.Ticket;
 import com.capstone.ticket.model.User;
+import com.capstone.ticket.repository.QueryRepository;
+import com.capstone.ticket.repository.TicketRepository;
 import com.capstone.ticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,184 +29,212 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class UserController {
 
-    @Autowired
-    UserRepository userRepository;
-    
-    public PasswordEncoder encoder() {
-    	return new BCryptPasswordEncoder();
-    }
+	@Autowired
+	UserRepository userRepository;
 
-    @RequestMapping("/")
-    public ModelAndView viewHomePage() {
-        ModelAndView model = new ModelAndView("index1");
+	@Autowired
+	QueryRepository queryRepository;
+	
+	@Autowired 
+	TicketRepository ticketRepository;
 
-        return model;
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    }
+	@RequestMapping("/")
+	public ModelAndView viewHomePage(HttpSession session) {
+		
+		String name = (String) session.getAttribute("username");
+		if (session.getAttribute("username") != null) {
 
-    @RequestMapping("/login2")
-    public ModelAndView login() {
-        User user = new User();
-        ModelAndView model = new ModelAndView("login2");
-        model.addObject("user", user);
+			return new ModelAndView("redirect:/gettickets/"+name);
+		}
+		
+		else {
+			ModelAndView model = new ModelAndView("index1");
 
-        return model;
-    }
+			return model;
+		}
+	}
 
-    @RequestMapping(value = "/loginuser", method = RequestMethod.POST)
-    public ModelAndView loginUser(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session,ModelMap modelMap) {
+	@RequestMapping("/login2")
+	public ModelAndView login(HttpSession session) {
+		
+		String name = (String) session.getAttribute("username");
+		if (session.getAttribute("username") != null) {
 
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(name));
+			return new ModelAndView("redirect:/gettickets/"+name);
+		}else{
+			
+			User user = new User();
+			ModelAndView model = new ModelAndView("login2");
+			model.addObject("user", user);
 
-        ModelAndView model = new ModelAndView();
-        
-        if(existingUser.isPresent() && encoder().matches(password, existingUser.get().getPassword())) {
-        	session.setAttribute("username", name);
-            System.out.println("User logged in successfully");
-        	model.setStatus(HttpStatus.OK);
-            model.setViewName("redirect:gettickets/" + name);
-            return model;	
-        }else {
-        	model.setStatus(HttpStatus.UNAUTHORIZED);
-	          System.out.println("User exists but password is wrong");
-	          modelMap.put("error", "Invalid Account");
-	          model.addObject("error","Invalid Credentials");
-	          model.setViewName("redirect:login");
-	          return model;
-        }
-        
-    }
-    
-    
-    
-    @RequestMapping("/logout")
-    public ModelAndView logout(HttpServletRequest request) {
-    	HttpSession session = request.getSession();
-    	session.removeAttribute("username");
+			return model;
+		}
+	}
+
+	
+	
+	@RequestMapping(value = "/loginuser", method = RequestMethod.POST)
+	public ModelAndView loginUser(@ModelAttribute("user") User user,
+			HttpSession session, ModelMap modelMap) {
+
+		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user.getName()));
+
+		ModelAndView model = new ModelAndView("login2");
+
+		if (existingUser.isPresent() && encoder().matches(user.getPassword(), existingUser.get().getPassword())) {
+			session.setAttribute("username", user.getName());
+			model.addObject("user", user);
+			model.setStatus(HttpStatus.OK);
+			return new ModelAndView("redirect:gettickets/" + user.getName());
+			
+		}else if(!existingUser.isPresent()){
+			model.addObject("error", "User Doesn't Exist, Please sign up");
+			return model;
+		}
+		else {
+			model.addObject("error", "Invalid Credentials");
+			return model;
+		}
+
+	}
+
+	
+	
+	@RequestMapping("/logout2")
+	public ModelAndView logout(HttpSession session) {
+
+		session.removeAttribute("username");
     	session.invalidate();
-		return new ModelAndView("redirect:/login");
-    }
+		return new ModelAndView("redirect:/login2");
+	}
+	
+	
 
-    @RequestMapping("/signup")
-    public ModelAndView signUp() {
-        User user = new User();
-//        Address address = new Address();
-//        user.setAddress(address);
-//        Address address = new Address();
-        ModelAndView model = new ModelAndView("signup");
-        model.addObject("user", user);
-        model.addObject("address", new Address());
+	@RequestMapping("/signup")
+	public ModelAndView signUp() {
+		User user = new User();
+		ModelAndView model = new ModelAndView("signup");
+		model.addObject("user", user);
+		model.addObject("address", new Address());
 
-        return model;
-    }
+		return model;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/signupuser", method = RequestMethod.POST)
+	public ModelAndView signUpUser(@ModelAttribute("user") User user1,@ModelAttribute("address") Address address, HttpSession session) {
 
-    @RequestMapping(value = "/signupuser", method = RequestMethod.POST)
-    public ModelAndView signUpUser(@RequestParam("name") String name, @RequestParam("password") String password,
-            @RequestParam("street") String street,@RequestParam("city") String city,@RequestParam("state") String state, @RequestParam("zip") String zip, @RequestParam("contactNumber") String contactNumber, HttpSession session) {
+		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user1.getName()));
+		
+		ModelAndView model = new ModelAndView("signup");
 
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(name));
 
-        if (existingUser.isPresent()) {
-            System.out.println("User exists, Please Login");
-            
-        }
-        User user = new User();
-        String encodedPassword = encoder().encode(password);
-        Address address = new Address();
-        
-        
-        address.setStreet(street);
-        address.setCity(city);
-        address.setState(state);
-        address.setZip(zip);
-        
-        
-        user.setName(name);
-        user.setPassword(encodedPassword);
-        user.setAddress(address);
-        user.setContactNumber(contactNumber);
-        
-        session.setAttribute("address", address);
-        session.setAttribute("contactNumber",contactNumber);
+		
+		if (existingUser.isPresent()) {
+			model.addObject("error","User exists, Please Login");
+			return model;
 
-        userRepository.save(user);
-        return new ModelAndView("redirect:login2" );
-    }
-    
-    
-    
+		}else {
+			
+			User user = new User();
+			String encodedPassword = encoder().encode(user1.getPassword());
+			
+			Address address1 = new Address();
+			
+			
+			address1.setStreet(address.getStreet());
+			address1.setCity(address.getCity());
+			address1.setState(address.getState());
+			address1.setZip(address.getZip());
+			
+			user.setName(user1.getName());
+			user.setPassword(encodedPassword);
+			user.setAddress(address1);
+			user.setContactNumber(user1.getContactNumber());
 
-    @RequestMapping("/updateprofile")
-    public ModelAndView update() {
-    	
-    	
-    	System.out.println("Inside Update");
-        ModelAndView model = new ModelAndView("update");
-//        model.addObject("name",name);
-        model.addObject("user", new User());
-        model.addObject("address", new Address());
+			session.setAttribute("address", address1);
+			session.setAttribute("contactNumber", user1.getContactNumber());
+			
+			model.addObject("user",user);
+			model.addObject("address",address1);
+			userRepository.save(user);
+			return new ModelAndView("redirect:/login2");
+		}
+		
+	}
 
-        return model;
-    }
-    
-   
-    
-    
 
-    @RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-    public ModelAndView updateUser( @RequestParam("name") String name,
-            @RequestParam("password") String password, @RequestParam("street") String street,@RequestParam("city") String city,@RequestParam("state") String state, @RequestParam("zip") String zip, @RequestParam("contactNumber") String contactNumber, HttpSession session) {
-    	
-    	
-    	System.out.println(session.getAttribute("username"));
-    	
-    	String username = (String) session.getAttribute("username");
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(username));
 
-        if (!existingUser.isPresent()) {
-            System.out.println("User does not exist");
+	@RequestMapping("/updateprofile")
+	public ModelAndView update(HttpSession session) {
 
-        }
-        
-        Address address = new Address();
-        String encodedPassword = encoder().encode(password);
+		if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
 
-        address.setStreet(street);
-        address.setCity(city);
-        address.setState(state);
-        address.setZip(zip);
-        
-        existingUser.get().setName(name);
-        existingUser.get().setPassword(encodedPassword);
-        existingUser.get().setAddress(address);
-        existingUser.get().setContactNumber(contactNumber);
+			return new ModelAndView("redirect:/login2");
+		} else {
+		
+			ModelAndView model = new ModelAndView("update");
+			model.addObject("user", new User());
 
-        userRepository.saveAndFlush(existingUser.get());
-        System.out.println("User updated successfully");
+			model.addObject("address", new Address());
 
-        return new ModelAndView("redirect:gettickets/" + name);
-    }
+			return model;
+		}
 
-    
+	}
 
-     @GetMapping(value = "/getusers", produces = {MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.APPLICATION_JSON_VALUE })
-     public List<User> getUsers() {
-	     System.out.println("Inside Get all Users");
-	     System.out.println(userRepository.findAll());
-	     return userRepository.findAll();
-     }
-     
-     
-     @GetMapping(value = "/getuser/{id}", produces = {MediaType.APPLICATION_JSON_VALUE }, consumes = {MediaType.APPLICATION_JSON_VALUE })
-     public User getUser(@PathVariable long id) {
-    	 
-    	 Optional<User> user = userRepository.findById(id);
-    	 
-    	 if(!user.isPresent()) {
-    		 System.out.println("User not Found");
-    	    
-    	 }
-	     return user.get();
-     }
+	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
+	public ModelAndView updateUser(@RequestParam("password") String password, @RequestParam("street") String street,
+			@RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("zip") String zip,
+			@RequestParam("contactNumber") String contactNumber,Model model , HttpSession session) {
+
+   	
+		String username = (String) session.getAttribute("username");
+		
+		
+		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(username));
+
+		Address address = new Address();
+		String encodedPassword = encoder().encode(password);
+
+		address.setStreet(street);
+		address.setCity(city);
+		address.setState(state);
+		address.setZip(zip);
+
+		existingUser.get().setPassword(encodedPassword);
+		existingUser.get().setAddress(address);
+		existingUser.get().setContactNumber(contactNumber);
+
+		userRepository.saveAndFlush(existingUser.get());
+		
+		return new ModelAndView("redirect:gettickets/" + username);
+	}
+	
+	
+
+	@GetMapping(value = "/getusers", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public List<User> getUsers() {
+		
+		return userRepository.findAll();
+	}
+	
+	
+
+	@GetMapping(value = "/getuser/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public User getUser(@PathVariable long id) {
+
+		Optional<User> user = userRepository.findById(id);
+		return user.get();
+	}
 
 }

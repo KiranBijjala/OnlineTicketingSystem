@@ -2,6 +2,8 @@ package com.capstone.ticket.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,27 +22,34 @@ import com.capstone.ticket.repository.UserRepository;
 @RestController
 public class QueryController {
 
-	
 	@Autowired
 	QueryRepository queryRepository;
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
-	
+
 	@RequestMapping(value = "/query", method = RequestMethod.POST)
-    public Query queryUser(@RequestParam String name, @RequestParam String query) {
+    public ModelAndView queryUser(@RequestParam String query, HttpSession session) {
 		
-		System.out.println("Inside Post Query");
-		Optional<User> user = Optional.ofNullable(userRepository.findByName(name));
+		String name = (String) session.getAttribute("username");
 		
-		Query q = new Query();
-		
-		q.setQuery(query);
-		q.setUser(user.get());
-		
-		System.out.print(user.get().getQueries());
-		return queryRepository.saveAndFlush(q);
+		if(name!=null ) {
+			
+			
+			Optional<User> user = Optional.ofNullable(userRepository.findByName(name));
+			Query q = new Query();
+			
+			q.setQuery(query);
+			q.setUser(user.get());
+			
+			queryRepository.saveAndFlush(q);
+			
+			return new ModelAndView("query_received");
+		}
+		else {
+			return new ModelAndView("redirect:/login2");
+		}
         
     }
+
 }

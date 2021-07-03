@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" th:href="@{css/index1.css}" />
-	<meta charset="utf-8" />
-	<title>User Login page</title>
+<link rel="stylesheet" th:href="@{css/index1.css}" />
+<meta charset="utf-8" />
+<title>User Login page</title>
 </head>
 
 <body>
@@ -12,12 +13,14 @@
 		<div class="hero-text">
 			<h1>Sign Up User</h1>
 		</div>
+
 	</div>
 	<br>
 	<br>
 	<div align="center">
 		<form action="#" th:action="@{/signupuser}" method="post">
 
+			<p style="color: Red" th:text="${error}" />
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>User Name:</td>
@@ -25,7 +28,8 @@
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="password" th:field="*{user.password}" required /></td>
+					<td><input type="password" th:field="*{user.password}"
+						required /></td>
 				</tr>
 				<tr>
 					<td>Street:</td>
@@ -49,10 +53,18 @@
 
 				<tr>
 					<td>Contact Number:</td>
-					<td><input type="text" th:field="*{user.contactNumber}" required /></td>
+					<td><input type="text" th:field="*{user.contactNumber}"
+						required /></td>
 				</tr>
 				<tr>
-					<td colspan="2"><button onclick="saveData()" type="submit">Sign Up</button> </td>
+					<td colspan="2">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button name="action" onclick="location.href='/'" value="cancel"
+							type="reset">Go Back</button> &nbsp;&nbsp;
+						<button name="action" value="cancel" type="reset">Clear</button>
+						&nbsp;&nbsp;
+						<button onclick="saveData()" type="submit">Sign Up</button>
+					</td>
 				</tr>
 			</table>
 		</form>
@@ -60,12 +72,9 @@
 
 
 	<script>
-
-
-		function saveData() {
+		/* function saveData() {
 			alert("User Signup successful");
-		}
-
+		} */
 	</script>
 </body>
 
