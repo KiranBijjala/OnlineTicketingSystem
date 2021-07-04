@@ -44,7 +44,7 @@
                                 <th>Contact Number</th>
                                 <th>Travel Date</th>
                                 <th>Return Date</th>
-                                <!-- <th>Passengers</th> -->
+                             <!--    <th>Passengers</th> -->
                                 <th>Options</th>
                             </tr>
                         </thead>
@@ -58,11 +58,13 @@
                                 <td th:text="${ticket.travelDate}">Travel Date</td>
                                 <td th:text="${ticket.returnDate}">Return Date</td>
                                 <!-- <td th:text="${passengers.name}">Passengers:</td> -->
-                            
+                            	<!-- <td th:each="passenger : ${passengers}"> -->
+                            	<!-- <td th:text="${passenger.name}">Ticket ID</td> -->
+                                <!-- <td th:text="${passenger.passengerContact}">Name</td> -->
                                 <td>
 
-                                    <!-- <a class="oButton" th:href="@{'/edit/' + ${ticket.id}}">Edit</a>
-                                    &nbsp; -->
+                                    <a class="oButton" th:href="@{'/ticket/' + ${ticket.id}}">Edit</a>
+                                    &nbsp; 
                                     <a class="oButton" th:href="@{'/delete/' + ${ticket.id}}">Delete</a>
                                 </td>
                             </tr>

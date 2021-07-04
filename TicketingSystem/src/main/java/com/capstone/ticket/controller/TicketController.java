@@ -46,6 +46,7 @@ public class TicketController {
 			
 			for(Ticket t : listTickets) {
 				List<Passenger> p = t.getPassengers();
+				System.out.print(p.toString());
 				model.addObject("passengers",p);
 			}
 			
@@ -92,12 +93,10 @@ public class TicketController {
 		ticket.setName(username);
 		
 		Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passengers.getName()));
-		passengers.setTicket(ticket);
-	
-		Passenger tick = new Passenger();
+		
 		if(!p.isPresent()) {
+			passengers.setTicket(ticket);
 			passengerRepository.save(passengers);
-			
 		}
 		
 		List<Passenger> list = new ArrayList<>();
@@ -119,47 +118,71 @@ public class TicketController {
 
 	}
 	
-	@RequestMapping("/edit/{id}")
-	public ModelAndView editTicket(@PathVariable(name = "id") Long id,@ModelAttribute("passenger") Passenger passengers ) {
-		ModelAndView mav = new ModelAndView("edit_ticket");
-		Optional<Ticket> ticket = ticketRepository.findById(id);
-
-		if (!ticket.isPresent()) {
-			return new ModelAndView("redirect:/login2");
-		}
-		else {
-			mav.addObject("passenger",new Passenger());
-			return mav;
-		}
-			
-		}
-//	}
-
-	@RequestMapping("/save1/{id}")
-	public ModelAndView edit(@PathVariable(name = "id") Long id,@ModelAttribute("passenger") Passenger passengers ) {
-
-		ModelAndView mav = new ModelAndView("edit_ticket");
-		Optional<Ticket> ticket = ticketRepository.findById(id);
-		mav.addObject("ticket",ticket);
-		
-		if (!ticket.isPresent()) {
-			return new ModelAndView("redirect:/login2");
-		}
-		
-		Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passengers.getName()));
-		passengers.setTicket(ticket.get());
 	
-		if(!p.isPresent()) {
-			passengerRepository.save(passengers);
+	
+	@RequestMapping("/ticket/{id}")
+	public ModelAndView editTicket(@PathVariable(name = "id") Long id, HttpSession session) {
+		
+		
+		String username = (String) session.getAttribute("username");
+		
+		if(username!=null) {
+			Optional<Ticket> ticket = ticketRepository.findById(id);
+			if (!ticket.isPresent()) {
+				return new ModelAndView("redirect:/login2");
+			}
+			else {
+				ModelAndView mav = new ModelAndView("edit_ticket");
+				mav.addObject("ticket",ticket.get());
+				mav.addObject("passenger",new Passenger());
+				return mav;
+			}
+		}else {
+			return new ModelAndView("redirect:/login2");
 		}
 		
-		List<Passenger> list = new ArrayList<>();
-		list.add(passengers);
-		ticket.get().setPassengers(list);
-		mav.addObject("passenger", passengers);
-		
+			
+	}
 
-		return mav;
+	@PostMapping("/ticket/{id}")
+	public ModelAndView edit(@PathVariable(name = "id") Long id,@ModelAttribute("passenger") Passenger passenger, HttpSession session ) {
+
+		String username = (String) session.getAttribute("username");
+		
+//		if(username!=null) {
+			ModelAndView mav = new ModelAndView("edit_ticket");
+			
+			Optional<Ticket> ticket = ticketRepository.findById(id);
+			mav.addObject("ticket",ticket.get());		
+			Optional<List<Passenger>>existingPassengers = Optional.ofNullable(ticket.get().getPassengers());
+			
+			Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passenger.getName()));
+			
+			System.out.println("name"+passenger.getName());
+			System.out.println(passenger.getPassengerContact());
+			
+			
+			boolean list = existingPassengers.get().stream().filter(pass->pass.getName().equals(passenger.getName())).findFirst().isPresent();
+			
+			if(list){
+				mav.addObject("error","Ticket already has this passenger");
+				return mav;
+				
+			}else {
+				if(!p.isPresent()) {
+					
+					passenger.setTicket(ticket.get());
+					passengerRepository.save(passenger);
+					System.out.println(passengerRepository.findAll());
+					
+				}
+				passenger.setTicket(ticket.get());
+				existingPassengers.get().add(passenger);
+				System.out.println("Updated Ticket:"+existingPassengers.get());
+				mav.addObject("passenger", passenger);
+				return new ModelAndView("redirect:/gettickets/" + username);
+			}
+		
 	}
 
 	@RequestMapping("/delete/{id}")
@@ -172,6 +195,14 @@ public class TicketController {
 		}
 		ticketRepository.delete(t.get());
 		return new ModelAndView("redirect:/gettickets/" + t.get().getName());
+	}
+	
+	@GetMapping(value = "/gettickets/{name}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public List<Ticket> gettickets(@PathVariable String name) {
+		
+		User user = userRepository.findByName(name);
+		return ticketRepository.findAll();
 	}
 
 }

@@ -53,9 +53,16 @@ public class Passenger {
 	private String passengerContact;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JsonIgnoreProperties({"passengers"})
 	@JoinColumn(name = "ticket_id", nullable = true)
 	private Ticket ticket;
 	
+	@Override
+	public String toString() {
+		return "Passenger [passengerid=" + passengerid + ", name=" + name + ", passengerContact=" + passengerContact
+				+ "]";
+	}
+
 	public long getPassengerid() {
 		return passengerid;
 	}

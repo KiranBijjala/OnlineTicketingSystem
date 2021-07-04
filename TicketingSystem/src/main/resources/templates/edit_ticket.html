@@ -12,9 +12,10 @@
 	<div align="center">
 		<h1>Add Passengers to the Ticket</h1>
 		<br />
-		<form action="#" th:action="@{/save1/__${ticket.id}__" method="post">
+		<form action="#" th:action="@{/ticket/__${ticket.id}__}" method="post">
 
 			<table border="0" cellpadding="10">
+			<p style="color:Red" th:text="${error}" />
 				<tr>
 					<td>User Name:</td>
 					<td><input type="text" th:field="*{passenger.name}" required /></td>
@@ -26,7 +27,7 @@
 				</tr>
 				
 					<td colspan="2">
-<button name="action" value="submit" type="submit">Edit Ticket</button>
+			<button name="action" value="submit" type="submit">Edit Ticket</button>
 							</td>
 				</tr>
 			</table>

@@ -46,10 +46,38 @@ public class Ticket implements Serializable{
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER, optional=true)
-	@JsonIgnoreProperties({"queries","feedbacks"})
+	@JsonIgnoreProperties({"queries","feedbacks","passengers"})
 	@JoinColumn(name="user_name", referencedColumnName="name")
 	private User user;
 
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((passengers == null) ? 0 : passengers.hashCode());
+		return result;
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ticket other = (Ticket) obj;
+		if (passengers == null) {
+			if (other.passengers != null)
+				return false;
+		} else if (!passengers.equals(other.passengers))
+			return false;
+		return true;
+	}
+	
+	
 	public User getUser() {
 		return user;
 	}
