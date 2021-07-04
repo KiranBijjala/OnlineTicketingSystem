@@ -1,71 +1,99 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <link rel="stylesheet" th:href="@{css/index1.css}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="utf-8" />
+    <title>Book a New Ticket</title>
+  </head>
 
-<head>
-<link rel="stylesheet" th:href="@{css/index1.css}" />
-<meta charset="utf-8" />
-<title>Book a New Ticket</title>
-</head>
+  <body>
+    <div class="hero-image">
+      <div class="hero-text">
+        <h1>Book a New Ticket</h1>
+      </div>
+      <a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+    </div>
 
-<body>
-	<div class="hero-image">
-		<div class="hero-text">
-			<h1>Book a New Ticket</h1>
-		</div>
-		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
-	</div>
-
-	<p style="color: Red" th:text="${error}" />
-	<div align="center">
-		<form action="#" th:action="@{/ticket}"
-			method="post">
-
-			<table border="0" cellpadding="10">
-				<!-- <tr>
+    <p style="color: Red" th:text="${error}" />
+    <div align="center">
+      <form action="#" th:action="@{/ticket}" method="post">
+        <table border="0" cellpadding="10">
+          <!-- <tr>
 					<td>Name:</td>
 					<td><input type="text" th:value="${ticket.name}" id="name" name="name" required /></td>
 				</tr>  -->
 
-				<!-- <tr>
+          <!-- <tr>
 					<td>Name:</td>
 					<td><input type="text" th:field="${ticket.name}" required /></td>
-				</tr>  --> 
+				</tr>  -->
 
-				<tr>
-					<td>Departure Location:</td>
-					<td><input type="text" th:field="*{ticket.departureLocation}"
-						required /></td>
-				</tr>
+          <tr>
+            <td>Departure Location:</td>
+            <td>
+              <input
+                type="text"
+                th:field="*{ticket.departureLocation}"
+                required
+              />
+            </td>
+          </tr>
 
-				<tr>
-					<td>Destination Location:</td>
-					<td><input type="text" th:field="*{ticket.destinationLocation}"
-						required /></td>
-				</tr>
-				<tr>
-					<td>Contact Number:</td>
-					<td><input type="text" th:field="*{ticket.contact}" required /></td>
-				</tr>
-				<tr>
-					<td>Travel Date:</td>
-					<td><input type="date" id="travelDate"
-						th:field="*{ticket.travelDate}" required /></td>
-				</tr>
-				<tr>
-					<td>Return Date:</td>
-					<td><input type="date" id="returnDate"
-						th:field="*{ticket.returnDate}" required /></td>
-				</tr>
+          <tr>
+            <td>Destination Location:</td>
+            <td>
+              <input
+                type="text"
+                th:field="*{ticket.destinationLocation}"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Contact Number:</td>
+            <td><input type="text" th:field="*{ticket.contact}" required /></td>
+          </tr>
+          <tr>
+            <td>Travel Date:</td>
+            <td>
+              <input
+                type="date"
+                id="travelDate"
+                th:field="*{ticket.travelDate}"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Return Date:</td>
+            <td>
+              <input
+                type="date"
+                id="returnDate"
+                th:field="*{ticket.returnDate}"
+                required
+              />
+            </td>
+          </tr>
 
-				<tr>
-					<td>Ticket Price:</td>
-					<td><input type="number" th:field="*{ticket.price}" /></td>
+          <tr>
+            <td>Ticket Price:</td>
+            <td><input type="number" th:field="*{ticket.price}" /></td>
+          </tr>
 
+          <tr id="passengersToBeAdded"></tr>
+          <tr></tr>
 
-				</tr>
-
-				<tr>
+          <td align="center">
+            <button name="passengerNum" value="0" onclick="saveData()">
+              Add Passenger
+            </button>
+          </td>
+          <td>
+            <label for="numPasengers">Passenger(s) (Max 3):</label>
+          </td>
+          <!-- <tr>
 					<td>Passenger Name:</td>
 					<td><input type="text" th:field="*{passengers.name}" /></td>
 				</tr>
@@ -73,34 +101,39 @@
 				<tr>
 					<td>Passenger Contact Number:</td>
 					<td><input type="text" th:field="*{passengers.passengerContact}" /></td>
-				</tr>
+				</tr> -->
 
-
-				<tr>
-
-					<td colspan="2">
-						<button name="action" onclick="location.href='/'" value="cancel" type="reset">Go Back</button>
-						&nbsp;&nbsp;
-						<button name="action" value="cancel" type="reset">Clear</button>
-						&nbsp;&nbsp;
-						<button name="action" value="submit" type="submit">Book a
-							New Ticket</button>
-					</td>
-				</tr>
-			</table>
-
-		</form>
-	</div>
-	<div class="hero-image2">
-        <div class="display-AD-text">
-            <h1>50% OFF USING CODE:</h1>
-        </div>
-        <div class="display-AD-color-text">
-            <h1>BRILLIO</h1>
-        </div>
+          <tr>
+            <td colspan="2">
+              <button
+                name="action"
+                onclick="location.href='/'"
+                value="cancel"
+                type="reset"
+              >
+                Go Back
+              </button>
+              &nbsp;&nbsp;
+              <button name="action" value="cancel" type="reset">Clear</button>
+              &nbsp;&nbsp;
+              <button name="action" value="submit" type="submit">
+                Book a New Ticket
+              </button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    <div class="hero-image2">
+      <div class="display-AD-text">
+        <h1>50% OFF USING CODE:</h1>
+      </div>
+      <div class="display-AD-color-text">
+        <h1>BRILLIO</h1>
+      </div>
     </div>
 
-	<!-- <select name="passengers" id="passengers">
+    <!-- <select name="passengers" id="passengers">
 			<option value="">--Please choose an option--</option>
 			<option value="one">One</option>
 			<option value="Two">Two</option>
@@ -114,10 +147,50 @@
 				Dynamic Registration Form Fields Creates Here
 			</form>
 		</div> -->
-</body>
+  </body>
+  <script>
+    // Below each passenger field is instantiated up to a max of 3 passengers
+    // We get the value of the selected button pressed "passengerNum"
+    // We parse the value to see if it is between [1, 3] to create a new passenger
+    // Else return
+    function saveData() {
+      var curValue = document.getElementsByName("passengerNum");
+      var newValue = parseInt(curValue[0].value) + 1;
+      if (newValue > 3) return;
+      if (newValue >= 1)
+        $("#passengersToBeAdded").append(addPassengerHTML(newValue));
+      curValue[0].value = newValue;
+    }
 
+    // For Thymeleaf, the inserted passenger name is :
+    // th:field="*{passengers[num of passenger].name}"
+    // Ex : th:field="*{passengers1.name}"
 
-<!-- <script>
+    // For Thymeleaf, the inserted passenger phone number is :
+    // th:field="*{passengers[num of passenger].passengerContact}"
+    // Ex : th:field="*{passengers1.passengerContact}"
+    function addPassengerHTML(passengerNum) {
+      var html = "";
+      html += "<tr align='left'>";
+      html += "<td >Passenger " + passengerNum + " Name:</td>";
+      html +=
+        '<td ><input type="text" th:field="*{passengers' +
+        passengerNum +
+        '.name}" /></td>';
+      html += "</tr>";
+      html += "<tr align='left'>";
+      html += "<td>Passenger " + passengerNum + " Contact Number:</td>";
+      html += "<td >";
+      html +=
+        ' <input type="text" th:field="*{passengers' +
+        passengerNum +
+        '.passengerContact}" />';
+      html += "</td>";
+      html += "</tr>";
+      return html;
+    }
+  </script>
+  <!-- <script>
 	$(document)
 			.ready(
 					function() {
@@ -191,7 +264,4 @@
 						}
 					});
 </script> -->
-
-
-
 </html>
