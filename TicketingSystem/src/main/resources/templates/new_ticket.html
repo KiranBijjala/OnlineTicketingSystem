@@ -18,7 +18,7 @@
 
 	<p style="color: Red" th:text="${error}" />
 	<div align="center">
-		<form action="#" th:action="@{/save}" 
+		<form action="#" th:action="@{/ticket}"
 			method="post">
 
 			<table border="0" cellpadding="10">
@@ -59,10 +59,15 @@
 				</tr>
 
 				<tr>
+					<td>Ticket Price:</td>
+					<td><input type="number" th:field="*{ticket.price}" /></td>
+
+
+				</tr>
+
+				<tr>
 					<td>Passenger Name:</td>
 					<td><input type="text" th:field="*{passengers.name}" /></td>
-
-
 				</tr>
 				
 				<tr>
@@ -84,10 +89,16 @@
 				</tr>
 			</table>
 
-
-
 		</form>
 	</div>
+	<div class="hero-image2">
+        <div class="display-AD-text">
+            <h1>50% OFF USING CODE:</h1>
+        </div>
+        <div class="display-AD-color-text">
+            <h1>BRILLIO</h1>
+        </div>
+    </div>
 
 	<!-- <select name="passengers" id="passengers">
 			<option value="">--Please choose an option--</option>

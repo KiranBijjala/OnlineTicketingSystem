@@ -2,26 +2,19 @@ package com.capstone.ticket.controller;
 
 import com.capstone.ticket.model.Passenger;
 import com.capstone.ticket.model.Ticket;
-
 import com.capstone.ticket.model.User;
 import com.capstone.ticket.repository.PassengerRepository;
 import com.capstone.ticket.repository.TicketRepository;
 import com.capstone.ticket.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 public class TicketController {
@@ -35,18 +28,17 @@ public class TicketController {
 	@Autowired
 	PassengerRepository passengerRepository;
 
-	@RequestMapping("/gettickets/{name}")
-	public ModelAndView HomePage(@PathVariable String name, HttpSession session) {
+	@GetMapping("/tickets")
+	public ModelAndView HomePage(HttpSession session) {
 
-		if (session.getAttribute("username")!=null && session.getAttribute("username").equals(name)) {
-			List<Ticket> listTickets = ticketRepository.findByName(name);
+		String username = (String) session.getAttribute("username");
+		if (session.getAttribute("username")!=null) {
+			Optional<List<Ticket>> listTickets = ticketRepository.findTicketsByName(username);
 			ModelAndView model = new ModelAndView("index");
 
-			model.addObject("listTickets", listTickets);
-			
-			for(Ticket t : listTickets) {
+			model.addObject("listTickets", listTickets.get());
+			for(Ticket t : listTickets.get()) {
 				List<Passenger> p = t.getPassengers();
-				System.out.print(p.toString());
 				model.addObject("passengers",p);
 			}
 			
@@ -58,7 +50,28 @@ public class TicketController {
 
 	}
 
-	@RequestMapping("/addticket")
+
+	@GetMapping("/tickets/cancelled")
+	public ModelAndView cancelledTickets(HttpSession session) {
+
+		String username = (String) session.getAttribute("username");
+		if (session.getAttribute("username")!=null) {
+			Optional<List<Ticket>> listTickets = ticketRepository.findTicketsByStatus(username);
+			ModelAndView model = new ModelAndView("cancel_tickets");
+
+			model.addObject("listTickets", listTickets.get());
+			for(Ticket t : listTickets.get()) {
+				List<Passenger> p = t.getPassengers();
+				model.addObject("passengers",p);
+			}
+			return model;
+		} else {
+			return new ModelAndView("redirect:/login2");
+		}
+
+	}
+
+	@GetMapping("/ticket")
 	public ModelAndView addTicket(HttpSession session) {
 
 		if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
@@ -85,42 +98,56 @@ public class TicketController {
 	}
 
 	
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping(value = "/ticket")
 	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket,@ModelAttribute("passenger") Passenger passengers, HttpSession session) {
 
 		String username = (String) session.getAttribute("username");
-		
+
+		User user = userRepository.findByName(username);
 		ticket.setName(username);
-		
+		ticket.setUser(user);
 		Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passengers.getName()));
-		
-		if(!p.isPresent()) {
+
+		System.out.println("Passenger Name:" + passengers.getName());
+
+		if(!p.isPresent()){
 			passengers.setTicket(ticket);
 			passengerRepository.save(passengers);
 		}
-		
 		List<Passenger> list = new ArrayList<>();
 		list.add(passengers);
-		if (session.getAttribute("username")!=null && ticket.getTravelDate().compareTo(ticket.getReturnDate())<=0) {
-			ticket.setPassengers(list);
-			ticketRepository.save(ticket);
-			String name = ticket.getName();
-			
-			return new ModelAndView("redirect:/gettickets/" + name);
-		}else if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0){
-			ModelAndView model = new ModelAndView("new_ticket");
-			model.addObject("error","Invalid Ticket Dates");
-			return model;
-		}else {
+		System.out.println(ticket.getTravelDate().compareTo(ticket.getReturnDate()));
+		String depart=ticket.getDepartureLocation();
+		String destiny = ticket.getDestinationLocation();
+		System.out.println("depart"+depart);
+		System.out.println("destiny"+destiny);
+		System.out.println("ticket : "+ !depart.equals(destiny));
+		if (session.getAttribute("username")!=null){
+			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0 || depart.equals(destiny)) {
+				ModelAndView model = new ModelAndView("new_ticket");
+				model.addObject("error", "one or more Invalid Ticket fields");
+				return model;
+			}
+			else{
+				System.out.println("ticket1 :"+ticket);
+				ModelAndView model = new ModelAndView("new_ticket") ;
+				ticket.setStatus("Active");
+				ticket.setPassengers(list);
+				ticketRepository.save(ticket);
+				model.addObject("ticket",ticket);
+				model.addObject("passengers",passengers);
+				String name = ticket.getName();
+				return new ModelAndView("redirect:/tickets");
+			}
+		}else{
 			return new ModelAndView("redirect:/login2");
 		}
-
 
 	}
 	
 	
 	
-	@RequestMapping("/ticket/{id}")
+	@GetMapping("/ticket/{id}")
 	public ModelAndView editTicket(@PathVariable(name = "id") Long id, HttpSession session) {
 		
 		
@@ -180,12 +207,12 @@ public class TicketController {
 				existingPassengers.get().add(passenger);
 				System.out.println("Updated Ticket:"+existingPassengers.get());
 				mav.addObject("passenger", passenger);
-				return new ModelAndView("redirect:/gettickets/" + username);
+				return new ModelAndView("redirect:/tickets");
 			}
 		
 	}
 
-	@RequestMapping("/delete/{id}")
+	@GetMapping("/delete/{id}")
 	public ModelAndView deleteTicket(@PathVariable(name = "id") Long id) {
 
 		Optional<Ticket> t = ticketRepository.findById(id);
@@ -193,11 +220,13 @@ public class TicketController {
 		if (!t.isPresent()) {
 			return new ModelAndView("redirect:/login2");
 		}
-		ticketRepository.delete(t.get());
-		return new ModelAndView("redirect:/gettickets/" + t.get().getName());
+//		ticketRepository.delete(t.get());
+		t.get().setStatus("Cancelled");
+		ticketRepository.save(t.get());
+		return new ModelAndView("redirect:/tickets");
 	}
 	
-	@GetMapping(value = "/gettickets/{name}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@GetMapping(value = "/tickets/{name}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public List<Ticket> gettickets(@PathVariable String name) {
 		

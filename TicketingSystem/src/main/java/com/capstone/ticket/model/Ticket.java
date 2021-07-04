@@ -1,15 +1,13 @@
 package com.capstone.ticket.model;
 
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 @Entity
@@ -31,9 +29,23 @@ public class Ticket implements Serializable{
 	
 	@Column(name = "destination_location", nullable = false)
 	private String destinationLocation;
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Column(name = "contact", nullable = false)
 	private String contact;
+
+	@Column(name = "status")
+	private String status;
+
+	@Column(name = "price", nullable = false)
+	private int price;
 	
 	@Column(name = "travel_date", nullable = false)
 	private Date travelDate;
@@ -158,30 +170,62 @@ public class Ticket implements Serializable{
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", name=" + name + ", departureLocation=" + departureLocation
-				+ ", destinationLocation=" + destinationLocation + ", contact=" + contact + ", travelDate=" + travelDate
-				+ ", returnDate=" + returnDate + ", passengers=" + passengers + ", user=" + user + "]";
+		return "Ticket{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", departureLocation='" + departureLocation + '\'' +
+				", destinationLocation='" + destinationLocation + '\'' +
+				", contact='" + contact + '\'' +
+				", status='" + status + '\'' +
+				", price=" + price +
+				", travelDate=" + travelDate +
+				", returnDate=" + returnDate +
+				", passengers=" + passengers +
+				", user=" + user +
+				'}';
 	}
-	public Ticket() {
-	}
-	
-public Ticket(long id, String name, String departureLocation, String destinationLocation, String contact,
-		Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.departureLocation = departureLocation;
-	this.destinationLocation = destinationLocation;
-	this.contact = contact;
-	this.travelDate = travelDate;
-	this.returnDate = returnDate;
-	this.passengers = passengers;
-	this.user = user;
-}
 
-	
+	public Ticket() {
+		this.price = 100;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+//	public Ticket(long id, String name, String departureLocation, String destinationLocation, String contact,
+//				  Date travelDate, Date returnDate, List<Passenger> passengers, User user, int price) {
+//	super();
+//	this.id = id;
+//	this.name = name;
+//	this.price=100;
+//	this.departureLocation = departureLocation;
+//	this.destinationLocation = destinationLocation;
+//	this.contact = contact;
+//	this.travelDate = travelDate;
+//	this.returnDate = returnDate;
+//	this.passengers = passengers;
+//	this.user = user;
+//}
+
+
+	public Ticket(String name, String departureLocation, String destinationLocation, String contact, String status, int price, Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
+		this.name = name;
+		this.departureLocation = departureLocation;
+		this.destinationLocation = destinationLocation;
+		this.contact = contact;
+		this.status = status;
+		this.price = 100;
+		this.travelDate = travelDate;
+		this.returnDate = returnDate;
+		this.passengers = passengers;
+		this.user = user;
+	}
 }

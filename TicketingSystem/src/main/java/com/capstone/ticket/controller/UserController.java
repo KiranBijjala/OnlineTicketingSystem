@@ -1,9 +1,6 @@
 package com.capstone.ticket.controller;
 
 import com.capstone.ticket.model.Address;
-
-import com.capstone.ticket.model.Query;
-import com.capstone.ticket.model.Ticket;
 import com.capstone.ticket.model.User;
 import com.capstone.ticket.repository.QueryRepository;
 import com.capstone.ticket.repository.TicketRepository;
@@ -15,16 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RestController
 public class UserController {
@@ -48,7 +41,7 @@ public class UserController {
 		String name = (String) session.getAttribute("username");
 		if (session.getAttribute("username") != null) {
 
-			return new ModelAndView("redirect:/gettickets/"+name);
+			return new ModelAndView("redirect:/tickets");
 		}
 		
 		else {
@@ -58,13 +51,13 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping("/login2")
+	@GetMapping("/login2")
 	public ModelAndView login(HttpSession session) {
 		
 		String name = (String) session.getAttribute("username");
 		if (session.getAttribute("username") != null) {
 
-			return new ModelAndView("redirect:/gettickets/"+name);
+			return new ModelAndView("redirect:/tickets");
 		}else{
 			
 			User user = new User();
@@ -77,7 +70,7 @@ public class UserController {
 
 	
 	
-	@RequestMapping(value = "/loginuser", method = RequestMethod.POST)
+	@PostMapping(value = "/login2")
 	public ModelAndView loginUser(@ModelAttribute("user") User user,
 			HttpSession session, ModelMap modelMap) {
 
@@ -89,7 +82,7 @@ public class UserController {
 			session.setAttribute("username", user.getName());
 			model.addObject("user", user);
 			model.setStatus(HttpStatus.OK);
-			return new ModelAndView("redirect:gettickets/" + user.getName());
+			return new ModelAndView("redirect:/tickets");
 			
 		}else if(!existingUser.isPresent()){
 			model.addObject("error", "User Doesn't Exist, Please sign up");
@@ -116,9 +109,8 @@ public class UserController {
 
 	@RequestMapping("/signup")
 	public ModelAndView signUp() {
-		User user = new User();
 		ModelAndView model = new ModelAndView("signup");
-		model.addObject("user", user);
+		model.addObject("user", new User());
 		model.addObject("address", new Address());
 
 		return model;

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/index1.css}" />
+    <meta charset="utf-8" />
+    <title>Ticket Manager</title>
+</head>
+
+<body>
+<div class="hero-image">
+    <div class="hero-text">
+        <h1>Tickets List</h1>
+
+    </div>
+    <a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+</div>
+<br />
+<br />
+
+
+<br /><br />
+
+
+<div align="center">
+    <a class="button" href="/ticket">Book a New Ticket </a>
+    &nbsp;&nbsp;&nbsp;
+    <a class="button" th:href="@{/updateprofile}">Edit User Profile</a>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div className='col-sm-2'>
+            </div>
+            <div class="col-lg-10 mt-5 mb-5">
+                <table class="styled-table" style="width: 80%">
+                    <thead>
+                    <tr>
+
+                        <th>Ticket ID</th>
+                        <!--                                <th>Name</th>-->
+                        <th>Departure Location</th>
+                        <th>Destination Location</th>
+                        <th>Contact Number</th>
+                        <th>Travel Date</th>
+                        <th>Return Date</th>
+                        <th>Ticket Price</th>
+                        <th>Passengers</th>
+<!--                        <th>Options</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr align="center" th:each="ticket : ${listTickets}">
+                        <td th:text="${ticket.id}">Ticket ID</td>
+                        <!--                                <td th:text="${ticket.name}">Name</td>-->
+                        <td th:text="${ticket.departureLocation}">Departure Location</td>
+                        <td th:text="${ticket.destinationLocation}">Destination Location</td>
+                        <td th:text="${ticket.contact}">Contact</td>
+                        <td th:text="${ticket.travelDate}">Travel Date</td>
+                        <td th:text="${ticket.returnDate}">Return Date</td>
+                        <td th:text="${ticket.price}">Ticket Price</td>
+                        <td th:text="${ticket.passengers}">Passengers:</td>
+                        <!-- <td th:each="passenger : ${passengers}"> -->
+                        <!-- <td th:text="${passenger.name}">Ticket ID</td> -->
+                        <!-- <td th:text="${passenger.passengerContact}">Name</td> -->
+                        
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    </form>
+</div>
+
+<!-- <div class="hero-image2">
+    <div class="display-AD-text">
+        <h1>50% OFF USING CODE:</h1>
+    </div>
+    <div class="display-AD-color-text">
+        <h1>BRILLIO</h1>
+    </div>
+</div> -->
+<script>
+        function openQueryForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeQueryForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        function openFeedbackForm() {
+            document.getElementById("myFormFeedback").style.display = "block";
+        }
+
+        function closeFeedBackForm() {
+            document.getElementById("myFormFeedback").style.display = "none";
+        }
+
+        function saveData(){
+        	localStorage.clear();
+            sessionStorage.clear();
+        }
+    </script>
+</body>
+
+</html>

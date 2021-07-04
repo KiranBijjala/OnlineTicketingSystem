@@ -5,24 +5,28 @@
 <head>
 <link rel="stylesheet" th:href="@{css/index1.css}" />
 <meta charset="utf-8" />
-<title>Edit Ticket</title>
+<title>User Login page</title>
 </head>
 
 <body>
+<div class="hero-image">
+		<div class="hero-text">
+			<h1>Add Passengers</h1>
+		</div>
+		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+	</div>
 	<div align="center">
-		<h1>Add Passengers to the Ticket</h1>
-		<br />
 		<form action="#" th:action="@{/ticket/__${ticket.id}__}" method="post">
 
 			<table border="0" cellpadding="10">
 			<p style="color:Red" th:text="${error}" />
 				<tr>
-					<td>User Name:</td>
+					<td>Passenger Name:</td>
 					<td><input type="text" th:field="*{passenger.name}" required /></td>
 				</tr>
 				
 				<tr>
-					<td>Contact:</td>
+					<td>Passenger Contact Number:</td>
 					<td><input type="text" th:field="*{passenger.passengerContact}" required /></td>
 				</tr>
 				
@@ -34,5 +38,10 @@
 		</form>
 	</div>
 </body>
+<script>
+/* function saveData(){
+	alert("User Updated Successfully");
+} */
+</script>
 
 </html>

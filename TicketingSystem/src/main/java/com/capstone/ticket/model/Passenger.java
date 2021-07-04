@@ -59,8 +59,7 @@ public class Passenger {
 	
 	@Override
 	public String toString() {
-		return "Passenger [passengerid=" + passengerid + ", name=" + name + ", passengerContact=" + passengerContact
-				+ "]";
+		return name ;
 	}
 
 	public long getPassengerid() {
