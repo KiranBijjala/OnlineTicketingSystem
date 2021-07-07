@@ -1,23 +1,12 @@
 package com.capstone.ticket.test;
 
-import org.junit.Before;
-
-
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.capstone.ticket.model.Ticket;
-import com.capstone.ticket.model.User;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class TestWebApp extends TicketingSystemApplicationTests
@@ -27,22 +16,25 @@ public class TestWebApp extends TicketingSystemApplicationTests
 
     private MockMvc mockMvc;
 
-    @Before
+    @Test
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-//    @Test
-//    public void testUserLogin() throws Exception {
-//        mockMvc.perform(get("/getuser/{id}",2))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType("application/json;charset=UTF-8"))
-//                .andExpect(jsonPath("$.id").value("2"))
-//                .andExpect(jsonPath("$.name").value("kiran"))
-//                .andExpect(jsonPath("$.address").value("1921 Kennedy Dr #202"))
-//                .andExpect(jsonPath("$.name").value("4084258090"))
-//                .andExpect(jsonPath("$.password").value("password"));
-//    }
+    @Test
+    public void testUserLogin() throws Exception {
+        mockMvc.perform(get("/user/{id}",1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.name").value("kiran"))
+                .andExpect(jsonPath("$.street").value("754 The Alameda"))
+                .andExpect(jsonPath("$.city").value("San Jose"))
+                .andExpect(jsonPath("$.state").value("CA"))
+                .andExpect(jsonPath("$.zip").value("95126"))
+                .andExpect(jsonPath("$.contactNumber").value("4084258090"))
+                .andExpect(jsonPath("$.password").value("password"));
+    }
 	
     
 //    @Test

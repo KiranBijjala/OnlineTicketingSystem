@@ -16,6 +16,7 @@ import java.util.List;
 public class Ticket implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
      @GeneratedValue(strategy=GenerationType.IDENTITY)
      @Column(name = "id", nullable = false)
@@ -52,13 +53,14 @@ public class Ticket implements Serializable{
 	
 	@Column(name = "return_date", nullable = false)
 	private Date returnDate;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket",orphanRemoval = true, cascade = CascadeType.ALL)
+
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ticket",orphanRemoval = true, cascade = CascadeType.ALL)
 	 private List<Passenger> passengers;
-	
-	
-	@ManyToOne(fetch = FetchType.EAGER, optional=true)
-	@JsonIgnoreProperties({"queries","feedbacks","passengers"})
+
+
+	@ManyToOne(fetch = FetchType.LAZY, optional=true)
+	@JsonIgnoreProperties({"queries","feedbacks","passengers","tickets"})
 	@JoinColumn(name="user_name", referencedColumnName="name")
 	private User user;
 
@@ -134,6 +136,9 @@ public class Ticket implements Serializable{
 		return contact;
 	}
 
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 
 	public String getDepartureLocation() {
 		return departureLocation;
@@ -147,9 +152,7 @@ public class Ticket implements Serializable{
 	public void setDestinationLocation(String destinationLocation) {
 		this.destinationLocation = destinationLocation;
 	}
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+
 
 
 	public Date getTravelDate() {
@@ -216,7 +219,22 @@ public class Ticket implements Serializable{
 //}
 
 
-	public Ticket(String name, String departureLocation, String destinationLocation, String contact, String status, int price, Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
+//	public Ticket(String name, String departureLocation, String destinationLocation, String contact, String status, int price, Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
+//		this.name = name;
+//		this.departureLocation = departureLocation;
+//		this.destinationLocation = destinationLocation;
+//		this.contact = contact;
+//		this.status = status;
+//		this.price = 100;
+//		this.travelDate = travelDate;
+//		this.returnDate = returnDate;
+//		this.passengers = passengers;
+//		this.user = user;
+//	}
+
+
+	public Ticket(long id, String name, String departureLocation, String destinationLocation, String contact, String status, int price, Date travelDate, Date returnDate, List<Passenger> passengers, User user) {
+		this.id = id;
 		this.name = name;
 		this.departureLocation = departureLocation;
 		this.destinationLocation = destinationLocation;

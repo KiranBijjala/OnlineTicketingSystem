@@ -1,9 +1,9 @@
 package com.capstone.ticket.model;
 
-import java.io.Serializable;
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
@@ -50,6 +50,6 @@ public class Query implements Serializable{
 
 	@ManyToOne(fetch = FetchType.EAGER, optional=true)
 	@JsonIgnoreProperties({"queries","feedbacks"})
-	@JoinColumn(name="user_name")
+	@JoinColumn(name="user_name",referencedColumnName = "name")
 	private User user;
 }

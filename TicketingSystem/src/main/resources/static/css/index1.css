@@ -7,6 +7,14 @@ a.button {
   text-decoration: none;
 }
 
+.text
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
 a.button1 {
   background-color: rgb(72, 207, 61);
   color: #fff;

@@ -7,6 +7,18 @@
     <link rel="stylesheet" th:href="@{/css/index1.css}" />
     <meta charset="utf-8" />
     <title>Ticket Manager</title>
+
+    <style>
+    h2{
+  text-transform: uppercase;
+  float: right;
+  font-family: algerian, courier;
+  color:white;
+  margin-right:20px;
+
+
+}
+</style>
 </head>
 
 <body>
@@ -15,8 +27,14 @@
             <h1>Tickets List</h1>
             
         </div>
-        <a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+
+
+    <a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+     <h2 >Hi,<span th:text="${session.username}">John Doe</span> </h2>
     </div>
+
+
+<!--    <div th:text="${session.username}">John Doe</div>-->
     <br />
     <br />
 
@@ -27,19 +45,14 @@
     <div align="center">
         <a class="button" href="/ticket">Book a New Ticket </a>
         &nbsp;&nbsp;&nbsp;
-        <a class="button" th:href="@{/updateprofile}">Edit User Profile</a>
-
-
+        <a class="button" th:href="@{/user}">Edit User Profile</a>
 
         <div class="container">
             <div class="row">
-                <div className='col-sm-2'>
-                </div>
                 <div class="col-lg-10 mt-5 mb-5">
                     <table class="styled-table" style="width: 80%">
                         <thead>
                             <tr>
-                            
                                 <th>Ticket ID</th>
 <!--                                <th>Name</th>-->
                                 <th>Departure Location</th>

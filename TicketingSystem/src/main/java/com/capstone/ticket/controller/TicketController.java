@@ -6,13 +6,13 @@ import com.capstone.ticket.model.User;
 import com.capstone.ticket.repository.PassengerRepository;
 import com.capstone.ticket.repository.TicketRepository;
 import com.capstone.ticket.repository.UserRepository;
+import com.capstone.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +28,9 @@ public class TicketController {
 	@Autowired
 	PassengerRepository passengerRepository;
 
+	@Autowired
+	TicketService ticketService;
+
 	@GetMapping("/tickets")
 	public ModelAndView HomePage(HttpSession session) {
 
@@ -37,6 +40,7 @@ public class TicketController {
 			ModelAndView model = new ModelAndView("index");
 
 			model.addObject("listTickets", listTickets.get());
+			model.addObject("user",username);
 			for(Ticket t : listTickets.get()) {
 				List<Passenger> p = t.getPassengers();
 				model.addObject("passengers",p);
@@ -60,10 +64,6 @@ public class TicketController {
 			ModelAndView model = new ModelAndView("cancel_tickets");
 
 			model.addObject("listTickets", listTickets.get());
-			for(Ticket t : listTickets.get()) {
-				List<Passenger> p = t.getPassengers();
-				model.addObject("passengers",p);
-			}
 			return model;
 		} else {
 			return new ModelAndView("redirect:/login2");
@@ -74,6 +74,7 @@ public class TicketController {
 	@GetMapping("/ticket")
 	public ModelAndView addTicket(HttpSession session) {
 
+		String username = (String) session.getAttribute("username");
 		if (session.getAttribute("username") == null || session.getAttribute("username").equals("")) {
 
 			return new ModelAndView("redirect:/login2");
@@ -82,6 +83,7 @@ public class TicketController {
 			Passenger passengers=new Passenger();
 			ModelAndView model = new ModelAndView("new_ticket");
 			model.addObject("ticket", ticket);
+			model.addObject("user",username);
 			model.addObject("passengers",passengers);
 			return model;
 		}
@@ -98,45 +100,69 @@ public class TicketController {
 	}
 
 	
+//	@PostMapping(value = "/ticket")
+//	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket,@ModelAttribute("passenger") Passenger passengers, HttpSession session) {
+//
+//		String username = (String) session.getAttribute("username");
+//
+//		User user = userRepository.findByName(username);
+//		ticket.setName(username);
+//		ticket.setUser(user);
+//		Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passengers.getName()));
+//
+//		System.out.println("Passenger Name:" + passengers.getName());
+//
+//		if(!p.isPresent()){
+//			passengers.setTicket(ticket);
+//			passengerRepository.save(passengers);
+//		}
+//		List<Passenger> list = new ArrayList<>();
+//		list.add(passengers);
+//		System.out.println(ticket.getTravelDate().compareTo(ticket.getReturnDate()));
+//		String depart=ticket.getDepartureLocation();
+//		String destiny = ticket.getDestinationLocation();
+//		System.out.println("depart"+depart);
+//		System.out.println("destiny"+destiny);
+//		System.out.println("ticket : "+ !depart.equals(destiny));
+//		if (session.getAttribute("username")!=null){
+//			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0 || depart.equals(destiny)) {
+//				ModelAndView model = new ModelAndView("new_ticket");
+//				model.addObject("error", "one or more Invalid Ticket fields");
+//				return model;
+//			}
+//			else{
+//				System.out.println("ticket1 :"+ticket);
+//				ModelAndView model = new ModelAndView("new_ticket") ;
+//				ticket.setStatus("Active");
+//				ticket.setPassengers(list);
+//				ticketRepository.save(ticket);
+//				model.addObject("ticket",ticket);
+//				model.addObject("passengers",passengers);
+//				String name = ticket.getName();
+//				return new ModelAndView("redirect:/tickets");
+//			}
+//		}else{
+//			return new ModelAndView("redirect:/login2");
+//		}
+//
+//	}
+
+
+
 	@PostMapping(value = "/ticket")
 	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket,@ModelAttribute("passenger") Passenger passengers, HttpSession session) {
 
-		String username = (String) session.getAttribute("username");
-
-		User user = userRepository.findByName(username);
-		ticket.setName(username);
-		ticket.setUser(user);
-		Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passengers.getName()));
-
-		System.out.println("Passenger Name:" + passengers.getName());
-
-		if(!p.isPresent()){
-			passengers.setTicket(ticket);
-			passengerRepository.save(passengers);
-		}
-		List<Passenger> list = new ArrayList<>();
-		list.add(passengers);
-		System.out.println(ticket.getTravelDate().compareTo(ticket.getReturnDate()));
-		String depart=ticket.getDepartureLocation();
-		String destiny = ticket.getDestinationLocation();
-		System.out.println("depart"+depart);
-		System.out.println("destiny"+destiny);
-		System.out.println("ticket : "+ !depart.equals(destiny));
 		if (session.getAttribute("username")!=null){
-			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0 || depart.equals(destiny)) {
+			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0) {
 				ModelAndView model = new ModelAndView("new_ticket");
 				model.addObject("error", "one or more Invalid Ticket fields");
 				return model;
 			}
 			else{
-				System.out.println("ticket1 :"+ticket);
+				ticketService.createTicket(ticket,passengers,session);
 				ModelAndView model = new ModelAndView("new_ticket") ;
-				ticket.setStatus("Active");
-				ticket.setPassengers(list);
-				ticketRepository.save(ticket);
 				model.addObject("ticket",ticket);
 				model.addObject("passengers",passengers);
-				String name = ticket.getName();
 				return new ModelAndView("redirect:/tickets");
 			}
 		}else{
@@ -144,6 +170,86 @@ public class TicketController {
 		}
 
 	}
+
+
+
+//	@PostMapping(value = "/ticket",consumes = "application/x-www-form-urlencoded")
+//	public ModelAndView saveTicket(@ModelAttribute Ticket ticket, @ModelAttribute Passenger passenger1, @ModelAttribute Passenger passenger2, @ModelAttribute Passenger passenger3,HttpSession session) throws IOException {
+//
+//		String username = (String) session.getAttribute("username");
+//		System.out.println(ticket);
+//		User user = userRepository.findByName(username);
+//
+//		System.out.println(ticket.toString());
+//		ticket.setName(username);
+//		ticket.setUser(user);
+//
+//		Optional<Passenger> p1 = Optional.ofNullable(passengerRepository.findByName(passenger1.getName()));
+//		Optional<Passenger> p2 = Optional.ofNullable(passengerRepository.findByName(passenger2.getName()));
+//		Optional<Passenger> p3 = Optional.ofNullable(passengerRepository.findByName(passenger3.getName()));
+//
+//
+//		if(!p1.isPresent()){
+//			passenger1.setTicket(ticket);
+//			passengerRepository.save(passenger1);
+//		}
+//
+//
+//		if(!p2.isPresent()){
+//			passenger2.setTicket(ticket);
+//			passengerRepository.save(passenger2);
+//		}
+//
+//		if(!p3.isPresent()){
+//			passenger3.setTicket(ticket);
+//			passengerRepository.save(passenger3);
+//		}
+//
+//		List<Passenger> passengers = new ArrayList<>();
+//
+//		passengers.add(passenger1);
+//		passengers.add(passenger2);
+//		passengers.add(passenger3);
+//
+//
+//		System.out.println("passengers"+passengers);
+//
+//
+////		List<Passenger> list = new ArrayList<>();
+////		list.add(passengers);
+//		System.out.println(ticket.getTravelDate().compareTo(ticket.getReturnDate()));
+//		String depart=ticket.getDepartureLocation();
+//		String destiny = ticket.getDestinationLocation();
+//		System.out.println("depart"+depart);
+//		System.out.println("destiny"+destiny);
+//		System.out.println("ticket : "+ !depart.equals(destiny));
+//		if (session.getAttribute("username")!=null){
+//			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0 || depart.equals(destiny)) {
+//				ModelAndView model = new ModelAndView("new_ticket");
+//				model.addObject("error", "one or more Invalid Ticket fields");
+//				return model;
+////				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//			}
+//			else{
+//				System.out.println("ticket1 :"+ticket);
+//				ModelAndView model = new ModelAndView("new_ticket") ;
+//				ticket.setStatus("Active");
+//				ticket.setPassengers(passengers);
+//				ticketRepository.save(ticket);
+//				model.addObject("ticket",ticket);
+//				model.addObject("passengers1",passenger1);
+//				model.addObject("passengers2",passenger2);
+//				model.addObject("passengers3",passenger3);
+//				String name = ticket.getName();
+//				return new ModelAndView("redirect:/tickets");
+////				return ResponseEntity.ok(ticket);
+//			}
+//		}else{
+//			return new ModelAndView("redirect:/login2");
+////			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//		}
+//
+//	}
 	
 	
 	
@@ -152,14 +258,14 @@ public class TicketController {
 		
 		
 		String username = (String) session.getAttribute("username");
-		
+		ModelAndView mav = new ModelAndView("edit_ticket");
 		if(username!=null) {
 			Optional<Ticket> ticket = ticketRepository.findById(id);
 			if (!ticket.isPresent()) {
 				return new ModelAndView("redirect:/login2");
 			}
 			else {
-				ModelAndView mav = new ModelAndView("edit_ticket");
+
 				mav.addObject("ticket",ticket.get());
 				mav.addObject("passenger",new Passenger());
 				return mav;
@@ -228,7 +334,7 @@ public class TicketController {
 	
 	@GetMapping(value = "/tickets/{name}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public List<Ticket> gettickets(@PathVariable String name) {
+	public List<Ticket> tickets(@PathVariable String name) {
 		
 		User user = userRepository.findByName(name);
 		return ticketRepository.findAll();
