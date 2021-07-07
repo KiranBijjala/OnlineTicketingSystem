@@ -15,7 +15,7 @@
       <a class="button1" href="/logout2">Logout</a>
     </div>
 
-    <p style="color: Red" th:text="${error}" />
+
     <div align="center">
       <form action="#" th:action="@{/ticket}" method="post" >
         <table border="0" cellpadding="10">
@@ -28,7 +28,7 @@
 					<td>Name:</td>
 					<td><input type="text" th:field="${ticket.name}" required /></td>
 				</tr>  -->
-
+          <p style="color: Red" th:text="${error}" />
           <tr>
             <td>Departure Location:</td>
             <td>
@@ -85,8 +85,8 @@
             <td><input type="text" th:field="*{ticket.price}" readonly /></td>
           </tr>
 
-          <tr id="passengersToBeAdded"></tr>
-          <tr></tr>
+<!--          <tr id="passengersToBeAdded"></tr>-->
+<!--          <tr></tr>-->
 
 <!--          <td align="center">-->
 <!--            <button name="passengerNum" value="0" onclick="saveData()">-->

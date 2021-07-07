@@ -7,6 +7,8 @@ import com.capstone.ticket.repository.PassengerRepository;
 import com.capstone.ticket.repository.TicketRepository;
 import com.capstone.ticket.repository.UserRepository;
 import com.capstone.ticket.service.TicketService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import java.util.Optional;
 
 @RestController
 public class TicketController {
+
+	Logger logger = LoggerFactory.getLogger(TicketController.class);
 
 	@Autowired
 	TicketRepository ticketRepository;
@@ -36,6 +40,7 @@ public class TicketController {
 
 		String username = (String) session.getAttribute("username");
 		if (session.getAttribute("username")!=null) {
+			logger.info("Users Tickets");
 			Optional<List<Ticket>> listTickets = ticketRepository.findTicketsByName(username);
 			ModelAndView model = new ModelAndView("index");
 
@@ -49,6 +54,7 @@ public class TicketController {
 //			model.addObject("passengers",new Passenger());
 			return model;
 		} else {
+			logger.error("User not logged in");
 			return new ModelAndView("redirect:/login2");
 		}
 
@@ -152,15 +158,17 @@ public class TicketController {
 	@PostMapping(value = "/ticket")
 	public ModelAndView saveTicket(@ModelAttribute("ticket") Ticket ticket,@ModelAttribute("passenger") Passenger passengers, HttpSession session) {
 
+		ModelAndView model = new ModelAndView("new_ticket");
 		if (session.getAttribute("username")!=null){
 			if(ticket.getTravelDate().compareTo(ticket.getReturnDate())>0) {
-				ModelAndView model = new ModelAndView("new_ticket");
+				logger.error("Invalid Ticket Fields");
 				model.addObject("error", "one or more Invalid Ticket fields");
+				model.addObject("passengers",passengers);
 				return model;
 			}
 			else{
+				logger.info("Inside Ticket creation : Ticket Successfully Booked");
 				ticketService.createTicket(ticket,passengers,session);
-				ModelAndView model = new ModelAndView("new_ticket") ;
 				model.addObject("ticket",ticket);
 				model.addObject("passengers",passengers);
 				return new ModelAndView("redirect:/tickets");
@@ -291,14 +299,10 @@ public class TicketController {
 			
 			Optional<Passenger> p = Optional.ofNullable(passengerRepository.findByName(passenger.getName()));
 			
-			System.out.println("name"+passenger.getName());
-			System.out.println(passenger.getPassengerContact());
-			
-			
 			boolean list = existingPassengers.get().stream().filter(pass->pass.getName().equals(passenger.getName())).findFirst().isPresent();
 			
 			if(list){
-				mav.addObject("error","Ticket already has this passenger");
+				mav.addObject("error","This passenger cannot be added");
 				return mav;
 				
 			}else {
@@ -306,12 +310,10 @@ public class TicketController {
 					
 					passenger.setTicket(ticket.get());
 					passengerRepository.save(passenger);
-					System.out.println(passengerRepository.findAll());
 					
 				}
 				passenger.setTicket(ticket.get());
 				existingPassengers.get().add(passenger);
-				System.out.println("Updated Ticket:"+existingPassengers.get());
 				mav.addObject("passenger", passenger);
 				return new ModelAndView("redirect:/tickets");
 			}

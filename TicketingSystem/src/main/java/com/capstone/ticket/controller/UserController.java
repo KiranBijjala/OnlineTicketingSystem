@@ -35,7 +35,8 @@ public class UserController {
 
 	@RequestMapping("/")
 	public ModelAndView viewHomePage(HttpSession session) {
-		
+
+
 		String name = (String) session.getAttribute("username");
 		if (session.getAttribute("username") != null) {
 			return new ModelAndView("redirect:/tickets");
@@ -67,12 +68,15 @@ public class UserController {
 		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user.getName()));
 		ModelAndView model = new ModelAndView("login2");
 		if (existingUser.isPresent() && encoder().matches(user.getPassword(), existingUser.get().getPassword())) {
+			logger.trace("Login Successful");
 			session.setAttribute("username", user.getName());
 			model.addObject("user", user);
 			model.setStatus(HttpStatus.OK);
 			return new ModelAndView("redirect:/tickets");
 		}
 		else {
+			logger.error("Error 404 : Invalid Credentials");
+			model.setStatus(HttpStatus.NOT_FOUND);
 			model.addObject("error", "Invalid Credentials");
 			return model;
 		}
@@ -83,12 +87,14 @@ public class UserController {
 	public ModelAndView logout(HttpSession session) {
 		session.removeAttribute("username");
     	session.invalidate();
+    	logger.info("Logout Success");
 		return new ModelAndView("redirect:/login2");
 	}
 	
 
 	@GetMapping("/signup")
 	public ModelAndView signUp() {
+
 		ModelAndView model = new ModelAndView("signup");
 		model.addObject("user", new User());
 		model.addObject("address", new Address());
@@ -141,10 +147,12 @@ public class UserController {
 		ModelAndView model = new ModelAndView("signup");
 
 		if (existingUser.isPresent()) {
+			logger.info("Invalid user name or password");
 			model.addObject("error","Invalid Credentials");
 			return model;
 
 		}else {
+			logger.info("User registration Successful");
 			userService.registerUser(user1,address,session);
 			return new ModelAndView("redirect:/login2");
 		}
@@ -204,6 +212,7 @@ public class UserController {
 								   @RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("zip") String zip,
 								   @RequestParam("contactNumber") String contactNumber, HttpSession session) {
 
+		logger.info("User Updated");
 		userService.updateUser(password, street, city, state, zip, contactNumber, session);
 		return new ModelAndView("redirect:tickets" );
 	}
