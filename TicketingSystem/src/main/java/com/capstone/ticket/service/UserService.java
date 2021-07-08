@@ -25,7 +25,7 @@ public class UserService {
 
 
 	 public User registerUser(User user1, Address address, HttpSession session){
-         User user = new User();
+//         User user = new User();
          String encodedPassword = encoder().encode(user1.getPassword());
          ModelAndView model = new ModelAndView();
          Address address1 = new Address();
@@ -35,18 +35,18 @@ public class UserService {
          address1.setState(address.getState());
          address1.setZip(address.getZip());
 
-         user.setName(user1.getName());
-         user.setPassword(encodedPassword);
-         user.setAddress(address1);
-         user.setContactNumber(user1.getContactNumber());
+//         user.setName(user1.getName());
+         user1.setPassword(encodedPassword);
+         user1.setAddress(address1);
+//         user.setContactNumber(user1.getContactNumber());
 
          session.setAttribute("address", address1);
          session.setAttribute("contactNumber", user1.getContactNumber());
 
-         model.addObject("user",user);
+         model.addObject("user",user1);
          model.addObject("address",address1);
 
-         return userRepository.save(user);
+         return userRepository.save(user1);
      }
 
 

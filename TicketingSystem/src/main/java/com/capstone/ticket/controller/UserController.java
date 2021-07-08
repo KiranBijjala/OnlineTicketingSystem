@@ -1,5 +1,6 @@
 package com.capstone.ticket.controller;
 
+import com.capstone.ticket.exceptions.NotFoundException;
 import com.capstone.ticket.model.Address;
 import com.capstone.ticket.model.User;
 import com.capstone.ticket.repository.UserRepository;
@@ -172,12 +173,17 @@ public class UserController {
 	
 	
 
-	@GetMapping(value = "/user/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
+	@GetMapping(value = "/user/{name}", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public User getUser(@PathVariable long id) {
+	public User getUser(@PathVariable String name) {
 
-		Optional<User> user = userRepository.findById(id);
-		return user.get();
+		User user = userRepository.findByName(name);
+
+//		if(user==null) throw new RecordNotFoundException("Invalid User name " + name);
+		if(user==null) throw new NotFoundException("Invalid User name " + name);
+		return userRepository.findByName(name);
 	}
+
+
 
 }

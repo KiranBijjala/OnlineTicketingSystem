@@ -38,6 +38,8 @@ public class TicketService {
         if(!p.isPresent()){
             passengers.setTicket(ticket);
             passengerRepository.save(passengers);
+        }else{
+
         }
         List<Passenger> list = new ArrayList<>();
         list.add(passengers);
