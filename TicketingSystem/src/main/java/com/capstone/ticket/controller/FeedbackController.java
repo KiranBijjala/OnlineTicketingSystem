@@ -15,13 +15,13 @@ import javax.servlet.http.HttpSession;
 public class FeedbackController {
 
 	@Autowired
-	FeedbackService feebackService;
+	FeedbackService feedbackService;
 
 	@RequestMapping(value = "/feedback", method = RequestMethod.POST)
     public ModelAndView feedbackUser(@ModelAttribute("feedback") Feedback feedback,HttpSession session) {
 		String name = (String) session.getAttribute("username");
 		if(name!=null) {
-			feebackService.addFeedback(feedback,session);
+			feedbackService.addFeedback(feedback,session);
 			return new ModelAndView("feedback_received");
 		}else {
 			return new ModelAndView("redirect:/login2");

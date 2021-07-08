@@ -5,13 +5,15 @@
 	<link rel="stylesheet" th:href="@{css/index1.css}" />
 	<meta charset="utf-8" />
 	<title>Feedback Received</title>
+	<div th:replace="navbar :: head"></div>
 </head>
 
 <body>
+<header th:insert="navbar :: header" ></header>
 	<div align="center">
-		
+		<br>
 	<a> Thank you, your feedback has been received!</a>
-	<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+<!--	<a class="button1" onClick="saveData()" href="/logout2">Logout</a>-->
 	<br><br><br>
 	<a class="button" href="/">Click here to return</a>
 	</div>

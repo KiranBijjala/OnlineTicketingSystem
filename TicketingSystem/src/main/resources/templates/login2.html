@@ -5,15 +5,17 @@
 	<link rel="stylesheet" th:href="@{css/index1.css}" />
 	<meta charset="utf-8" />
 	<title>User Login page</title>
+	<div th:replace="homenavbar :: head"></div>
 </head>
 
 <body>
-	<div class="hero-image">
-		<div class="hero-text">
-			<h1>Login User</h1>
-			
-		</div>
-	</div>
+<!--	<div class="hero-image">-->
+<!--		<div class="hero-text">-->
+<!--			<h1>Login User</h1>-->
+<!--			-->
+<!--		</div>-->
+<!--	</div>-->
+<header th:insert="homenavbar :: header" ></header>
 	<br>
 	<br>
 	<div align="center">
@@ -38,10 +40,12 @@
 					<button onClick="saveData()" type="submit">Login</button> </td>
 				</tr>
 			</table>
+
+			<p>Don't have an account?, Please sign up below</p>
+			<a href="/signup">Sign Up</a>
 		</form>
 		
-		<p>Don't have an account , Please sign up here</p>
-		<a href="/signup">Sign Up</a>
+
 		
 	</div>
 	

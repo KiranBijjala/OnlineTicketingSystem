@@ -5,23 +5,26 @@
     <link rel="stylesheet" th:href="@{css/index1.css}" />
     <meta charset="utf-8" />
     <title>Ticket Manager</title>
+    <div th:replace="homenavbar :: head"></div>
 </head>
 
 <body>
-    <div class="hero-image">
-        <div class="hero-text">
-            <h1>Ticketing Home Page</h1>
-        </div>
-    </div>
-    <br>
-    <br>
-    <div align="center">
+<!--    <div class="hero-image">-->
+<!--        <div class="hero-text">-->
+<!--            <h1>Ticketing Home Page</h1>-->
+<!--        </div>-->
+<!--    </div>-->
 
-        <a href="login2" class="button">Login</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="signup" class="button">Sign Up</a>
-        <br /><br />
-    </div>
+<header th:insert="homenavbar :: header" ></header>
+<!--    <br>-->
+<!--    <br>-->
+<!--    <div align="center">-->
+
+<!--        <a href="login2" class="button">Login</a>-->
+<!--        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--        <a href="signup" class="button">Sign Up</a>-->
+<!--        <br /><br />-->
+<!--    </div>-->
 </body>
 
 </html>

@@ -5,13 +5,17 @@
 	<link rel="stylesheet" th:href="@{css/index1.css}" />
 	<meta charset="utf-8" />
 	<title>Query Received</title>
+	<div th:replace="navbar :: head"></div>
 </head>
 
 <body>
+
+
+<header th:insert="navbar :: header" ></header>
 	<div align="center">
-		
+		<br>
 	<a> Thank you, your query has been received!</a>
-	<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
+<!--	<a class="button1" onClick="saveData()" href="/logout2">Logout</a>-->
 	<br><br><br>
 	<a href="/" class="button" >Click here to return</a>
 	</div>

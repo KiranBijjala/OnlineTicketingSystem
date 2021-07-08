@@ -6,15 +6,17 @@
 <link rel="stylesheet" th:href="@{/css/index1.css}" />
 <meta charset="utf-8" />
 <title>User Login page</title>
+	<div th:replace="navbar :: head"></div>
 </head>
 
 <body>
-<div class="hero-image">
-		<div class="hero-text">
-			<h1>Add Passengers</h1>
-		</div>
-		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
-	</div>
+<!--<div class="hero-image">-->
+<!--		<div class="hero-text">-->
+<!--			<h1>Add Passengers</h1>-->
+<!--		</div>-->
+<!--		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>-->
+<!--	</div>-->
+<header th:insert="navbar :: header" ></header>
 	<div align="center">
 		<form action="#" th:action="@{/ticket/__${ticket.id}__}" method="post">
 
@@ -29,10 +31,13 @@
 					<td>Passenger Contact Number:</td>
 					<td><input type="text" th:field="*{passenger.passengerContact}" required /></td>
 				</tr>
-				
-					<td colspan="2">
-			<button name="action" value="submit" type="submit">Edit Ticket</button>
-							</td>
+
+				<td align="center" colspan="2">
+					<button name="action" onclick="location.href='/'" value="cancel" type="reset"> Go Back </button>
+					&nbsp;&nbsp;
+					<button name="action" value="submit" type="submit">Edit Ticket</button>
+				</td>
+
 				</tr>
 			</table>
 		</form>

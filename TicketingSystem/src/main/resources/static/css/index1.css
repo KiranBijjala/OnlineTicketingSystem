@@ -15,6 +15,14 @@ a.button {
     display: block;
 }
 
+.user{
+text-transform: uppercase;
+  float: right;
+  text-align:right;
+  color:white;
+  margin-right:20px;
+}
+
 a.button1 {
   background-color: rgb(72, 207, 61);
   color: #fff;
@@ -297,6 +305,8 @@ html {
   height: 30%;
   position: relative;
 }
+
+.topic { font-size: 20px; text-decoration: none; }
 
 /* Place text in the middle of the image */
 .display-AD-text {

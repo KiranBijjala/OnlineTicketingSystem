@@ -50,6 +50,7 @@ public class UserController {
 
 	@GetMapping("/login2")
 	public ModelAndView login(HttpSession session) {
+		logger.info("Inside Login Method");
 		String name = (String) session.getAttribute("username");
 		if (session.getAttribute("username") != null) {
 			return new ModelAndView("redirect:/tickets");
@@ -65,8 +66,11 @@ public class UserController {
 	@PostMapping(value = "/login2")
 	public ModelAndView loginUser(@ModelAttribute("user") User user, HttpSession session) {
 
+		// Find the user using username
 		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user.getName()));
 		ModelAndView model = new ModelAndView("login2");
+
+		//check if the request parameters matches the user data
 		if (existingUser.isPresent() && encoder().matches(user.getPassword(), existingUser.get().getPassword())) {
 			logger.trace("Login Successful");
 			session.setAttribute("username", user.getName());
@@ -101,51 +105,18 @@ public class UserController {
 		return model;
 	}
 
-	
-//	@PostMapping(value = "/signup")
-//	public ModelAndView signUpUser(@ModelAttribute("user") User user1,@ModelAttribute("address") Address address, HttpSession session) {
-//		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user1.getName()));
-//
-//		ModelAndView model = new ModelAndView("signup");
-//
-//		if (existingUser.isPresent()) {
-//			model.addObject("error","User exists, Please Login");
-//			return model;
-//
-//		}else {
-//			User user = new User();
-//			String encodedPassword = encoder().encode(user1.getPassword());
-//
-//			Address address1 = new Address();
-//
-//			address1.setStreet(address.getStreet());
-//			address1.setCity(address.getCity());
-//			address1.setState(address.getState());
-//			address1.setZip(address.getZip());
-//
-//			user.setName(user1.getName());
-//			user.setPassword(encodedPassword);
-//			user.setAddress(address1);
-//			user.setContactNumber(user1.getContactNumber());
-//
-//			session.setAttribute("address", address1);
-//			session.setAttribute("contactNumber", user1.getContactNumber());
-//
-//			model.addObject("user",user);
-//			model.addObject("address",address1);
-//			userRepository.save(user);
-//			return new ModelAndView("redirect:/login2");
-//		}
-//
-//	}
 
 
 	@PostMapping(value = "/signup")
 	public ModelAndView signUpUser(@ModelAttribute("user") User user1,@ModelAttribute("address") Address address, HttpSession session) {
+
+		// find the user using username
 		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(user1.getName()));
 
 		ModelAndView model = new ModelAndView("signup");
 
+
+		// check if user already exists
 		if (existingUser.isPresent()) {
 			logger.info("Invalid user name or password");
 			model.addObject("error","Invalid Credentials");
@@ -179,40 +150,13 @@ public class UserController {
 
 	}
 
-//	@PostMapping(value = "/user")
-//	public ModelAndView updateUser(@RequestParam("password") String password, @RequestParam("street") String street,
-//			@RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("zip") String zip,
-//			@RequestParam("contactNumber") String contactNumber,Model model , HttpSession session) {
-//
-//
-//		String username = (String) session.getAttribute("username");
-//
-//
-//		Optional<User> existingUser = Optional.ofNullable(userRepository.findByName(username));
-//
-//		Address address = new Address();
-//		String encodedPassword = encoder().encode(password);
-//
-//		address.setStreet(street);
-//		address.setCity(city);
-//		address.setState(state);
-//		address.setZip(zip);
-//
-//		existingUser.get().setPassword(encodedPassword);
-//		existingUser.get().setAddress(address);
-//		existingUser.get().setContactNumber(contactNumber);
-//
-//		userRepository.saveAndFlush(existingUser.get());
-//
-//		return new ModelAndView("redirect:tickets" );
-//	}
 
 	@PostMapping(value = "/user")
 	public ModelAndView updateUser(@RequestParam("password") String password, @RequestParam("street") String street,
 								   @RequestParam("city") String city, @RequestParam("state") String state, @RequestParam("zip") String zip,
 								   @RequestParam("contactNumber") String contactNumber, HttpSession session) {
 
-		logger.info("User Updated");
+		logger.info("Inside User Updation");
 		userService.updateUser(password, street, city, state, zip, contactNumber, session);
 		return new ModelAndView("redirect:tickets" );
 	}

@@ -4,17 +4,22 @@
     <link rel="stylesheet" th:href="@{css/index1.css}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="utf-8" />
-    <title>Book a New Ticket</title>
+<!--    <title>Book a New Ticket</title>-->
+      <div th:replace="navbar :: head"></div>
+<!--      <link href="/css/ticket.css" rel="stylesheet">-->
+
   </head>
 
   <body>
-    <div class="hero-image">
-      <div class="hero-text">
-        <h1>Book a New Ticket</h1>
-      </div>
-      <a class="button1" href="/logout2">Logout</a>
-    </div>
+<!--    <div class="hero-image">-->
+<!--      <div class="hero-text">-->
+<!--        <h1>Book a New Ticket</h1>-->
+<!--      </div>-->
+<!--      <a class="button1" href="/logout2">Logout</a>-->
+<!--    </div>-->
 
+
+<header th:insert="navbar :: header" ></header>
 
     <div align="center">
       <form action="#" th:action="@{/ticket}" method="post" >
@@ -64,6 +69,7 @@
                 type="date"
                 id="travelDate"
                 th:field="*{ticket.travelDate}"
+                onchange="setReturnDateMin(); validateChange()"
                 required
               />
             </td>
@@ -75,6 +81,8 @@
                 type="date"
                 id="returnDate"
                 th:field="*{ticket.returnDate}"
+                onchange="validateChange()"
+                readonly="readonly"
                 required
               />
             </td>
@@ -200,80 +208,52 @@
       html += "</td>";
       html += "</tr>";
       return html;
+
     }
+
+    function setMinDate() {
+      document.getElementById("travelDate").min = dateOfToday();
+      document.getElementById("returnDate").min = dateOfToday();
+    }
+
+    function setReturnDateMin() {
+      enableReturnDate();
+      document.getElementById("returnDate").min =
+        document.getElementById("travelDate").value;
+      console.table(document.getElementById("returnDate"));
+    }
+
+    function enableReturnDate() {
+      document.getElementById("returnDate").readOnly = false;
+    }
+
+    function validateChange() {
+      var fromDate = document.getElementById("travelDate").value;
+      var returnDate = document.getElementById("returnDate").value;
+      if (returnDate !== "" && fromDate > returnDate) {
+        alert("Please re-enter a valid travel & return date.");
+        document.getElementById("travelDate").value = "";
+        document.getElementById("returnDate").value = "";
+      }
+    }
+    function dateOfToday() {
+      var today = new Date();
+
+      var year = today.getFullYear();
+
+      var month = today.getMonth() + 1;
+      if (month < 10) month = "0" + month;
+
+      var day = today.getDate();
+      if (day < 10) day = "0" + day;
+
+      var date = year + "-" + month + "-" + day;
+
+      return date;
+
+     }
+
+
   </script>
-  <!-- <script>
-	$(document)
-			.ready(
-					function() {
-						$('select#passengers').change(function() {
-							var sel_value = $('option:selected').val();
-							if (sel_value == 0) {
-								$("#form_submit").empty(); // Resetting Form
-								$("#form1").css({
-									'display' : 'none'
-								});
-							} else {
-								$("#form_submit").empty(); //Resetting Form
-								// Below Function Creates Input Fields Dynamically
-								create(sel_value);
-								// Appending Submit Button To Form
-								$("#form_submit").append($("<input/>", {
-									type : 'submit',
-									value : 'Register'
-								}))
-							}
-						});
-						function create(sel_value) {
-							for (var i = 1; i <= sel_value; i++) {
-								$("div#form1").slideDown('slow');
-								$("div#form1")
-										.append(
-												$("#form_submit")
-														.append(
-																$("<div/>", {
-																	id : 'head'
-																})
-																		.append(
-																				$(
-																						"<h3/>")
-																						.text(
-																								"Registration Form"
-																										+ i)),
-																$(
-																		"<input/>",
-																		{
-																			type : 'text',
-																			placeholder : 'Name'
-																					+ i,
-																			name : 'name_'
-																					+ i
-																		}),
-																$("<br/>"),
-																$(
-																		"<input/>",
-																		{
-																			type : 'text',
-																			placeholder : 'Email'
-																					+ i,
-																			name : 'email_'
-																					+ i
-																		}),
-																$("<br/>"),
-																$(
-																		"<textarea/>",
-																		{
-																			placeholder : 'Message'
-																					+ i,
-																			type : 'text',
-																			name : 'msg_'
-																					+ i
-																		}),
-																$("<br/>"),
-																$("<hr/>"),
-																$("<br/>")))
-							}
-						}
-					});
-</script> -->
+
 </html>

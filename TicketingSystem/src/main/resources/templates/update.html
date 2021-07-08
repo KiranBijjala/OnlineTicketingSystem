@@ -6,15 +6,18 @@
 <link rel="stylesheet" th:href="@{css/index1.css}" />
 <meta charset="utf-8" />
 <title>User Login page</title>
+	<div th:replace="navbar :: head"></div>
 </head>
 
 <body>
-	<div class="hero-image">
-		<div class="hero-text">
-			<h1>Update User</h1>
-		</div>
-		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>
-	</div>
+<!--	<div class="hero-image">-->
+<!--		<div class="hero-text">-->
+<!--			<h1>Update User</h1>-->
+<!--		</div>-->
+<!--		<a class="button1" onClick="saveData()" href="/logout2">Logout</a>-->
+<!--	</div>-->
+
+<header th:insert="navbar :: header" ></header>
 	<div align="center">
 		<form action="#" th:action="@{/user}" method="post">
 
@@ -26,6 +29,7 @@
 					
 					<td><input type="text"  th:field="*{user.name}" required /></td>
 				</tr>  -->
+				<br>
 				<tr>
 					<td>Password:</td>
 					<td><input type="password" th:field="*{user.password}"
