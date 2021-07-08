@@ -4,25 +4,23 @@
     <link rel="stylesheet" th:href="@{css/index1.css}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="utf-8" />
-<!--    <title>Book a New Ticket</title>-->
-      <div th:replace="navbar :: head"></div>
-<!--      <link href="/css/ticket.css" rel="stylesheet">-->
-
+    <!--    <title>Book a New Ticket</title>-->
+    <div th:replace="navbar :: head"></div>
+    <!--      <link href="/css/ticket.css" rel="stylesheet">-->
   </head>
 
-  <body>
-<!--    <div class="hero-image">-->
-<!--      <div class="hero-text">-->
-<!--        <h1>Book a New Ticket</h1>-->
-<!--      </div>-->
-<!--      <a class="button1" href="/logout2">Logout</a>-->
-<!--    </div>-->
+  <body onload="setMinDate()">
+    <!--    <div class="hero-image">-->
+    <!--      <div class="hero-text">-->
+    <!--        <h1>Book a New Ticket</h1>-->
+    <!--      </div>-->
+    <!--      <a class="button1" href="/logout2">Logout</a>-->
+    <!--    </div>-->
 
-
-<header th:insert="navbar :: header" ></header>
+    <header th:insert="navbar :: header"></header>
 
     <div align="center">
-      <form action="#" th:action="@{/ticket}" method="post" >
+      <form action="#" th:action="@{/ticket}" method="post">
         <table border="0" cellpadding="10">
           <!-- <tr>
 					<td>Name:</td>
@@ -93,26 +91,34 @@
             <td><input type="text" th:field="*{ticket.price}" readonly /></td>
           </tr>
 
-<!--          <tr id="passengersToBeAdded"></tr>-->
-<!--          <tr></tr>-->
+          <!--          <tr id="passengersToBeAdded"></tr>-->
+          <!--          <tr></tr>-->
 
-<!--          <td align="center">-->
-<!--            <button name="passengerNum" value="0" onclick="saveData()">-->
-<!--              Add Passenger-->
-<!--            </button>-->
-<!--          </td>-->
-<!--          <td>-->
-<!--            <label for="numPasengers">Passenger(s) (Max 3):</label>-->
-<!--          </td>-->
+          <!--          <td align="center">-->
+          <!--            <button name="passengerNum" value="0" onclick="saveData()">-->
+          <!--              Add Passenger-->
+          <!--            </button>-->
+          <!--          </td>-->
+          <!--          <td>-->
+          <!--            <label for="numPasengers">Passenger(s) (Max 3):</label>-->
+          <!--          </td>-->
           <tr>
-					<td>Passenger Name:</td>
-					<td><input type="text" required th:field="*{passengers.name}" /></td>
-				</tr>
+            <td>Passenger Name:</td>
+            <td>
+              <input type="text" required th:field="*{passengers.name}" />
+            </td>
+          </tr>
 
-				<tr>
-					<td>Passenger Contact Number:</td>
-					<td><input type="text" required th:field="*{passengers.passengerContact}"  /></td>
-				</tr>
+          <tr>
+            <td>Passenger Contact Number:</td>
+            <td>
+              <input
+                type="text"
+                required
+                th:field="*{passengers.passengerContact}"
+              />
+            </td>
+          </tr>
 
           <tr>
             <td colspan="2">
@@ -160,15 +166,14 @@
 		</div> -->
   </body>
   <script>
-
-  function compare_input(){
-  var f_input=document.getElementById('depart').value;
-  var s_input=document.getElementById('destination').value;
-  if(f_input===s_input){
-     alert('Departure and Destination location cannot be same');
-     document.getElementById("destination").value = "";
-  }
-}
+    function compare_input() {
+      var f_input = document.getElementById("depart").value;
+      var s_input = document.getElementById("destination").value;
+      if (f_input === s_input) {
+        alert("Departure and Destination location cannot be same");
+        document.getElementById("destination").value = "";
+      }
+    }
     // Below each passenger field is instantiated up to a max of 3 passengers
     // We get the value of the selected button pressed "passengerNum"
     // We parse the value to see if it is between [1, 3] to create a new passenger
@@ -208,7 +213,6 @@
       html += "</td>";
       html += "</tr>";
       return html;
-
     }
 
     function setMinDate() {
@@ -250,10 +254,6 @@
       var date = year + "-" + month + "-" + day;
 
       return date;
-
-     }
-
-
+    }
   </script>
-
 </html>
