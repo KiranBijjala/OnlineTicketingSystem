@@ -177,9 +177,10 @@ public class UserController {
 			MediaType.APPLICATION_JSON_VALUE })
 	public User getUser(@PathVariable String name) {
 
+		logger.info("Inside User Method");
 		User user = userRepository.findByName(name);
 
-//		if(user==null) throw new RecordNotFoundException("Invalid User name " + name);
+//		if(user==null) throw new NotFoundException("Invalid User name " + name);
 		if(user==null) throw new NotFoundException("Invalid User name " + name);
 		return userRepository.findByName(name);
 	}
