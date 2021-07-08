@@ -13,7 +13,11 @@
   <body onload="setMinDate()">
 <header th:insert="navbar :: header" ></header>
 
+
+
     <div align="center">
+      <br>
+      <h1>Book a New Ticket</h1>
       <form action="#" th:action="@{/ticket}" method="post">
         <table border="0" cellpadding="10">
           <p style="color: Red" th:text="${error}" />
